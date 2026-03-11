@@ -47,6 +47,7 @@ Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashb
 | Authenticated & Verified Routes
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     //Attendance Management

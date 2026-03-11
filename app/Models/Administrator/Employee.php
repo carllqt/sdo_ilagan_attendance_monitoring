@@ -2,6 +2,7 @@
 
 namespace App\Models\Administrator;
 
+use App\Models\School;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\HumanResource\TardyConvertion;
@@ -65,5 +66,8 @@ class Employee extends Model
     public function vacationLeaves()
     {
         return $this->hasMany(VacationLeave::class);
+    }
+    public function school(){
+        return $this->belongsTo(School::class);
     }
 }
