@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Head, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Fingerprint } from "lucide-react";
@@ -33,6 +33,12 @@ import {
 import EmployeeRegistration from "./Partials/EmployeeRegistration";
 import EmployeeList from "./Partials/EmployeeList";
 import EmployeeEditDialog from "./Partials/EmployeeEditDialog";
+import axios from "axios";
+axios.defaults.headers.common["X-CSRF-TOKEN"] = document
+    .querySelector('meta[name="csrf-token"]')
+    ?.getAttribute("content");
+
+axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 const EmployeeManagement = ({
     employeesList,
@@ -46,6 +52,8 @@ const EmployeeManagement = ({
     const [unregistered, setUnregistered] = useState(unregisteredList || []);
 
     const [selectedEmployee, setSelectedEmployee] = useState("");
+    const selectedEmployeeRef = useRef(null);
+    const employeesRef = useRef(employees);
     const [scanStatus, setScanStatus] = useState("idle");
     const [scanMessage, setScanMessage] = useState("");
     const [scanning, setScanning] = useState(false);
@@ -66,6 +74,16 @@ const EmployeeManagement = ({
         "All Departments",
         ...new Set(employees.map((e) => e.department)),
     ];
+
+    const apiRef = useRef(null);
+
+    useEffect(() => {
+        selectedEmployeeRef.current = selectedEmployee;
+    }, [selectedEmployee]);
+
+    useEffect(() => {
+        employeesRef.current = employees;
+    }, [employees]);
 
     const [statusFilter, setStatusFilter] = useState("Active");
     const statusOptions = ["Active", "Inactive"];
@@ -122,83 +140,264 @@ const EmployeeManagement = ({
         };
     }, [eventSource]);
 
-    const cancelScan = () => {
-        if (eventSource) eventSource.close();
+    const cancelScan = async () => {
+        try {
+            if (apiRef.current) {
+                await apiRef.current.stopAcquisition();
+            }
+        } catch (error) {
+            console.error("Failed to stop acquisition:", error);
+        }
+
+        if (eventSource) {
+            eventSource.close();
+        }
+
         setScanning(false);
         setScanStatus("idle");
         setScanMessage("Scan cancelled");
     };
 
-    const registerFingerprint = () => {
-        if (!selectedEmployee) return;
+    useEffect(() => {
+        if (!window.Fingerprint || !window.Fingerprint.WebApi) {
+            setScanStatus("error");
+            setScanMessage("❌ Fingerprint SDK not loaded.");
+            return;
+        }
 
-        setScanning(true);
-        setScanStatus("scanning");
-        setScanMessage("🔄 Starting fingerprint registration...");
+        const api = new window.Fingerprint.WebApi();
+        apiRef.current = api;
 
-        const source = new EventSource(
-            `http://127.0.0.1:5000/bioRegisterSSE/${selectedEmployee}`
-        );
-        setEventSource(source);
+        api.onDeviceConnected = () => {
+            console.log("Fingerprint reader connected");
+        };
 
-        source.onmessage = (event) => {
+        api.onDeviceDisconnected = () => {
+            console.log("Fingerprint reader disconnected");
+            setScanStatus("error");
+            setScanMessage("❌ Fingerprint reader disconnected.");
+            setScanning(false);
+        };
+
+        api.onCommunicationFailed = () => {
+            console.error("Communication failed");
+            setScanStatus("error");
+            setScanMessage("❌ Cannot connect to fingerprint device. Check ADC.");
+            setScanning(false);
+        };
+
+        api.onAcquisitionStarted = () => {
+            setScanStatus("scanning");
+            setScanMessage("🔄 Scanner started. Place your finger on the reader...");
+        };
+
+        api.onAcquisitionStopped = () => {
+            console.log("Fingerprint acquisition stopped");
+        };
+
+        api.onQualityReported = (event) => {
+            console.log("Quality reported:", event);
+            setScanStatus("scanning");
+            setScanMessage("🔄 Finger detected. Processing sample...");
+        };
+
+        api.onErrorOccurred = (event) => {
+            console.error("Fingerprint error:", event);
+            setScanStatus("error");
+            setScanMessage(
+                `❌ ${event?.message || "Fingerprint reader error occurred."}`
+            );
+            setScanning(false);
+        };
+
+        api.onSamplesAcquired = async (event) => {
             try {
-                const data = JSON.parse(event.data);
-                if (!data || Object.keys(data).length === 0) return;
+                setScanStatus("scanning");
+                setScanMessage("🔄 Fingerprint captured. Saving template...");
 
-                if (data.success === null) {
-                    // Still scanning
-                    setScanStatus("scanning");
-                    setScanMessage(data.message);
-                } else if (data.success === true) {
-                    // Scan success
+                const samples = JSON.parse(event.samples);
+
+                console.log("selectedEmployeeRef.current", selectedEmployeeRef.current);
+                console.log("samples", samples);
+
+                const response = await axios.post("/fingerprint/register", {
+                    employee_id: selectedEmployeeRef.current,
+                    samples,
+                });
+                console.log("Laravel response:", response.data);
+
+                if (response.data.success) {
                     setScanStatus("success");
-                    setScanMessage(data.message);
+                    setScanMessage(
+                        response.data.message || "✅ Fingerprint registered successfully."
+                    );
                     setScanning(false);
-                    source.close();
+
+                    await apiRef.current.stopAcquisition();
 
                     setEmployees((prev) =>
                         prev.map((e) =>
-                            e.id === selectedEmployee
+                            e.id === selectedEmployeeRef.current
                                 ? {
-                                      ...e,
-                                      available_fingers: Math.max(
-                                          e.available_fingers - 1,
-                                          0
-                                      ),
-                                  }
+                                    ...e,
+                                    available_fingers: Math.max(
+                                        e.available_fingers - 1,
+                                        0
+                                    ),
+                                }
                                 : e
                         )
                     );
-                    const emp = employees.find(
-                        (e) => e.id === selectedEmployee
+
+                    const emp = employeesRef.current.find(
+                        (e) => e.id === selectedEmployeeRef.current
                     );
+
                     if (emp && emp.available_fingers - 1 <= 0) {
                         setSelectedEmployee("");
                     }
-                } else if (data.success === false) {
+                } else {
                     setScanStatus("error");
-                    setScanMessage(data.message);
+                    setScanMessage(
+                        response.data.message || "❌ Failed to register fingerprint."
+                    );
                     setScanning(false);
-                    source.close();
+                    await apiRef.current.stopAcquisition();
                 }
             } catch (err) {
-                console.error("Failed to parse SSE data:", err);
+                console.error("Failed to save fingerprint:", err);
+                console.error("Server response:", err.response?.data);
+
                 setScanStatus("error");
-                setScanMessage("❌ Unexpected error occurred.");
+                setScanMessage(
+                    err.response?.data?.message ||
+                        "❌ Unexpected error occurred while saving fingerprint."
+                );
                 setScanning(false);
-                source.close();
+
+                try {
+                    await apiRef.current.stopAcquisition();
+                } catch {}
             }
         };
 
-        source.onerror = (err) => {
-            console.error("SSE connection error:", err);
-            setScanStatus("error");
-            setScanMessage("❌ Could not reach fingerprint service.");
-            setScanning(false);
-            source.close();
+        return () => {
+            if (apiRef.current) {
+                apiRef.current.stopAcquisition().catch(() => {});
+            }
         };
+    }, []);
+
+    const registerFingerprint = async () => {
+        if (!selectedEmployee) return;
+
+        if (!apiRef.current) {
+            setScanStatus("error");
+            setScanMessage("❌ Fingerprint API not initialized.");
+            return;
+        }
+
+        try {
+            setScanning(true);
+            setScanStatus("scanning");
+            setScanMessage("🔄 Starting fingerprint registration...");
+
+            await apiRef.current.startAcquisition(
+                window.Fingerprint.SampleFormat.Intermediate
+            );
+        } catch (error) {
+            console.error("Failed to start acquisition:", error);
+            setScanStatus("error");
+            setScanMessage("❌ Failed to start fingerprint scanner.");
+            setScanning(false);
+        }
     };
+
+    const cancelFingerprintRegistration = async () => {
+        try {
+            if (apiRef.current) {
+                await apiRef.current.stopAcquisition();
+            }
+        } catch (error) {
+            console.error("Failed to stop acquisition:", error);
+        }
+
+        setScanning(false);
+        setScanStatus("idle");
+        setScanMessage("Fingerprint scanning cancelled.");
+    };
+
+
+    // const registerFingerprint = () => {
+    //     if (!selectedEmployee) return;
+
+    //     setScanning(true);
+    //     setScanStatus("scanning");
+    //     setScanMessage("🔄 Starting fingerprint registration...");
+
+    //     const source = new EventSource(
+    //         `http://127.0.0.1:5000/bioRegisterSSE/${selectedEmployee}`
+    //     );
+    //     setEventSource(source);
+
+    //     source.onmessage = (event) => {
+    //         try {
+    //             const data = JSON.parse(event.data);
+    //             if (!data || Object.keys(data).length === 0) return;
+
+    //             if (data.success === null) {
+    //                 // Still scanning
+    //                 setScanStatus("scanning");
+    //                 setScanMessage(data.message);
+    //             } else if (data.success === true) {
+    //                 // Scan success
+    //                 setScanStatus("success");
+    //                 setScanMessage(data.message);
+    //                 setScanning(false);
+    //                 source.close();
+
+    //                 setEmployees((prev) =>
+    //                     prev.map((e) =>
+    //                         e.id === selectedEmployee
+    //                             ? {
+    //                                   ...e,
+    //                                   available_fingers: Math.max(
+    //                                       e.available_fingers - 1,
+    //                                       0
+    //                                   ),
+    //                               }
+    //                             : e
+    //                     )
+    //                 );
+    //                 const emp = employees.find(
+    //                     (e) => e.id === selectedEmployee
+    //                 );
+    //                 if (emp && emp.available_fingers - 1 <= 0) {
+    //                     setSelectedEmployee("");
+    //                 }
+    //             } else if (data.success === false) {
+    //                 setScanStatus("error");
+    //                 setScanMessage(data.message);
+    //                 setScanning(false);
+    //                 source.close();
+    //             }
+    //         } catch (err) {
+    //             console.error("Failed to parse SSE data:", err);
+    //             setScanStatus("error");
+    //             setScanMessage("❌ Unexpected error occurred.");
+    //             setScanning(false);
+    //             source.close();
+    //         }
+    //     };
+
+    //     source.onerror = (err) => {
+    //         console.error("SSE connection error:", err);
+    //         setScanStatus("error");
+    //         setScanMessage("❌ Could not reach fingerprint service.");
+    //         setScanning(false);
+    //         source.close();
+    //     };
+    // };
 
     const startTestFingerprint = () => {
         if (testSource) {
