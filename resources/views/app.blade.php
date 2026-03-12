@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
@@ -15,9 +16,12 @@
 
         <!-- Scripts -->
         @routes
+        <script src="/digitalpersona/websdk.client.ui.js"></script>
+        <script src="/digitalpersona/fingerprint.sdk.js"></script>
         @viteReactRefresh
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
+
     </head>
     <body class="font-sans antialiased">
         @inertia
