@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Administrator\Employee;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class LocatorSlip extends Model
+{
+    /** @use HasFactory<\Database\Factories\LocatorSlipFactory> */
+    use HasFactory;
+    protected $fillable = [
+        'employee_id',
+        'purpose_of_travel',
+        'official_business',
+        'official_time',
+        'destination',
+    ];
+
+    protected $casts = [
+        'official_business' => 'boolean',
+        'official_time' => 'boolean',
+    ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+}
