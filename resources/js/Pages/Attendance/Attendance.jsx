@@ -18,7 +18,7 @@ const Attendance = ({ attendances }) => {
     const [showPMPromptModal, setShowPMPromptModal] = useState(false);
     const [pmPromptData, setPMPromptData] = useState(null);
     const [activeTab, setActiveTab] = useState(
-        new Date().getHours() < 12 ? "AM" : "PM"
+        new Date().getHours() < 12 ? "AM" : "PM",
     );
     const [search, setSearch] = useState("");
     const eventSourceRef = useRef(null);
@@ -109,7 +109,7 @@ const Attendance = ({ attendances }) => {
                         const existing = updated.find(
                             (r) =>
                                 r.employee.first_name === first_name &&
-                                r.employee.last_name === last_name
+                                r.employee.last_name === last_name,
                         );
 
                         const emptyAM = { am_time_in: null, am_time_out: null };
@@ -217,7 +217,7 @@ const Attendance = ({ attendances }) => {
         const eventSource = new EventSource(
             `http://127.0.0.1:5000/bioFingerprintChoice/${
                 promptData.employee.id
-            }/${encodeURIComponent(choice)}`
+            }/${encodeURIComponent(choice)}`,
         );
 
         eventSource.onmessage = (event) => {
@@ -254,7 +254,7 @@ const Attendance = ({ attendances }) => {
                         const existing = updated.find(
                             (r) =>
                                 r.employee.first_name === first_name &&
-                                r.employee.last_name === last_name
+                                r.employee.last_name === last_name,
                         );
 
                         const emptyAM = { am_time_in: null, am_time_out: null };
@@ -372,7 +372,7 @@ const Attendance = ({ attendances }) => {
     return (
         <>
             <Head title="Attendance" />
-            <main className="w-full flex justify-center items-center p-8 min-h-screen bg-blue-600">
+            <main className="w-full flex justify-center items-center p-8 min-h-screen bg-white-600">
                 <div className="grid grid-cols-5 gap-6 w-full max-w-7xl">
                     {/* Left Panel */}
                     <Card className="col-span-3 shadow-xl rounded-2xl p-6 flex flex-col justify-center border border-gray-100">
@@ -415,8 +415,8 @@ const Attendance = ({ attendances }) => {
                                         {retryCountdown !== null
                                             ? `Retrying in ${retryCountdown}...`
                                             : successCountdown !== null
-                                            ? `Resetting in ${successCountdown}...`
-                                            : ""}
+                                              ? `Resetting in ${successCountdown}...`
+                                              : ""}
                                     </p>
                                 </div>
 
@@ -444,7 +444,7 @@ const Attendance = ({ attendances }) => {
                                                         year: "numeric",
                                                         month: "long",
                                                         day: "numeric",
-                                                    }
+                                                    },
                                                 )}
                                             </div>
                                             <div className="w-full h-1 bg-gray-200 mt-2">

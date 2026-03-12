@@ -94,6 +94,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/services', function () {
+    return Inertia::render('Services');
+    })->name('services');
+
+    Route::get('/print-dtr', function () {
+    return Inertia::render('Employee/PrintDTR');
+    })->name('printdtr');
+
+    Route::get('/travel-order', function () {
+        return Inertia::render('Employee/TravelOrder');
+    })->name('travelorder');
+
+    Route::get('/locator-slip', function () {
+        return Inertia::render('Employee/LocatorSlip');
+    })->name('locatorslip');
 });
 
 
