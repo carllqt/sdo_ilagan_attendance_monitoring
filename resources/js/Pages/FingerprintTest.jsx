@@ -6,6 +6,7 @@ export default function FingerprintTest() {
     const [deviceInfo, setDeviceInfo] = useState("");
     const [sampleData, setSampleData] = useState("");
     const [qualityInfo, setQualityInfo] = useState("");
+    const [matchResult, setMatchResult] = useState("");
 
     useEffect(() => {
         if (!window.Fingerprint || !window.Fingerprint.WebApi) {
@@ -17,51 +18,72 @@ export default function FingerprintTest() {
         apiRef.current = api;
 
         api.onDeviceConnected = (event) => {
-            console.log("DeviceConnected", event);
             setStatus("Fingerprint reader connected");
             setDeviceInfo(JSON.stringify(event, null, 2));
         };
 
-        api.onDeviceDisconnected = (event) => {
-            console.log("DeviceDisconnected", event);
+        api.onDeviceDisconnected = () => {
             setStatus("Fingerprint reader disconnected");
             setDeviceInfo("");
         };
 
-        api.onSamplesAcquired = (event) => {
-            console.log("SamplesAcquired", event);
+        api.onSamplesAcquired = async (event) => {
             setStatus("Fingerprint captured successfully");
 
+            let parsedSamples = event.samples;
+
             try {
-                const samples = JSON.parse(event.samples);
-                setSampleData(JSON.stringify(samples, null, 2));
+                parsedSamples = JSON.parse(event.samples);
+                setSampleData(JSON.stringify(parsedSamples, null, 2));
             } catch {
                 setSampleData(String(event.samples));
+            }
+
+            try {
+                setMatchResult("Checking fingerprint match...");
+
+                const response = await fetch("/api/fingerprint/verify", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                    body: JSON.stringify({
+                        fingerprint_sample: parsedSamples,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (result.matched) {
+                    setMatchResult(`✅ Match found: ${result.user_name}`);
+                } else {
+                    setMatchResult("❌ Fingerprint does not match");
+                }
+            } catch (error) {
+                console.error(error);
+                setMatchResult("❌ Failed to verify fingerprint");
             }
         };
 
         api.onQualityReported = (event) => {
-            console.log("QualityReported", event);
             setQualityInfo(JSON.stringify(event, null, 2));
         };
 
         api.onErrorOccurred = (event) => {
-            console.error("ErrorOccurred", event);
             setStatus("Error: " + (event?.message || "Unknown error"));
         };
 
-        api.onCommunicationFailed = (event) => {
-            console.error("CommunicationFailed", event);
+        api.onCommunicationFailed = () => {
             setStatus("Communication failed. Check ADC / local agent.");
         };
 
-        api.onAcquisitionStarted = (event) => {
-            console.log("AcquisitionStarted", event);
+        api.onAcquisitionStarted = () => {
             setStatus("Scanner started. Place your finger on the reader.");
+            setMatchResult("");
         };
 
-        api.onAcquisitionStopped = (event) => {
-            console.log("AcquisitionStopped", event);
+        api.onAcquisitionStopped = () => {
             setStatus("Scanner stopped");
         };
 
@@ -81,7 +103,7 @@ export default function FingerprintTest() {
 
             setStatus("Starting scanner...");
             await apiRef.current.startAcquisition(
-                window.Fingerprint.SampleFormat.PngImage
+                window.Fingerprint.SampleFormat.PngImage,
             );
         } catch (error) {
             console.error(error);
@@ -107,6 +129,13 @@ export default function FingerprintTest() {
             <div className="mb-4">
                 <p className="font-semibold">Status:</p>
                 <p className="text-blue-600">{status}</p>
+            </div>
+
+            <div className="mb-4">
+                <p className="font-semibold">Match Result:</p>
+                <p className="text-green-600">
+                    {matchResult || "No verification yet"}
+                </p>
             </div>
 
             <div className="flex gap-3 mb-6">
