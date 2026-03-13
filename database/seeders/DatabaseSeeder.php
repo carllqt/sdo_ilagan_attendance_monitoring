@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Database\Seeders\Convertion;
 use Database\Seeders\MonthlySeeder;
 use Database\Seeders\LeaveCardSeeder;
+use Database\Seeders\SDOSchoolSeeder;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -54,6 +55,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MonthlySeeder::class,
             LeaveCardSeeder::class,
+            SDOSchoolSeeder::class,
         ]);
     }
 }
