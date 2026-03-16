@@ -15,6 +15,7 @@ import {
     UserCog,
     LogOut,
     User,
+    FileUser,
 } from "lucide-react";
 
 import { Link } from "@inertiajs/react";
@@ -108,7 +109,7 @@ export function AppSidebar({ active, user, ...props }) {
                                         >
                                             <Link
                                                 href={route(
-                                                    "employeemanagement"
+                                                    "employeemanagement",
                                                 )}
                                                 className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
                                             >
@@ -130,12 +131,39 @@ export function AppSidebar({ active, user, ...props }) {
                                             asChild
                                             isActive={
                                                 active ===
+                                                "departmenthead.index"
+                                            }
+                                        >
+                                            <Link
+                                                href={route(
+                                                    "departmenthead.index",
+                                                )}
+                                                className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                            >
+                                                <FileUser
+                                                    className={`h-4 w-4 ${
+                                                        active ===
+                                                        "departmenthead.index"
+                                                            ? "!text-black"
+                                                            : "!text-white"
+                                                    }`}
+                                                />
+                                                Department Heads
+                                            </Link>
+                                        </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
+
+                                    <SidebarMenuSubItem>
+                                        <SidebarMenuSubButton
+                                            asChild
+                                            isActive={
+                                                active ===
                                                 "attendancemanagement"
                                             }
                                         >
                                             <Link
                                                 href={route(
-                                                    "attendancemanagement"
+                                                    "attendancemanagement",
                                                 )}
                                                 className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
                                             >
@@ -156,7 +184,7 @@ export function AppSidebar({ active, user, ...props }) {
                                         <SidebarMenuSubButton
                                             asChild
                                             isActive={url.startsWith(
-                                                "/dailytimerecord"
+                                                "/dailytimerecord",
                                             )}
                                         >
                                             <Link
@@ -166,7 +194,7 @@ export function AppSidebar({ active, user, ...props }) {
                                                 <Clock
                                                     className={`h-4 w-4 ${
                                                         url.startsWith(
-                                                            "/dailytimerecord"
+                                                            "/dailytimerecord",
                                                         )
                                                             ? "!text-black"
                                                             : "!text-white"
@@ -181,7 +209,7 @@ export function AppSidebar({ active, user, ...props }) {
                                         <SidebarMenuSubButton
                                             asChild
                                             isActive={url.startsWith(
-                                                "/tardysummary"
+                                                "/tardysummary",
                                             )}
                                         >
                                             <Link
@@ -288,19 +316,19 @@ export function AppSidebar({ active, user, ...props }) {
                                         <SidebarMenuSubButton
                                             asChild
                                             isActive={url.startsWith(
-                                                "/employeeleavecard"
+                                                "/employeeleavecard",
                                             )}
                                         >
                                             <Link
                                                 href={route(
-                                                    "employeeleavecard"
+                                                    "employeeleavecard",
                                                 )}
                                                 className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
                                             >
                                                 <CalendarClock
                                                     className={`h-4 w-4 ${
                                                         url.startsWith(
-                                                            "/employeeleavecard"
+                                                            "/employeeleavecard",
                                                         )
                                                             ? "!text-black"
                                                             : "!text-white"

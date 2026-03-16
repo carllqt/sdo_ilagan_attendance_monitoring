@@ -5,7 +5,8 @@ use App\Http\Controllers\Administrator\{
     DailyTimeRecordController,
     EmployeeManagementController,
     TardinessRecordController,
-    AttendanceManagementController
+    AttendanceManagementController,
+    DepartmentHeadController,
 };
 use App\Http\Controllers\FingerprintController;
 use App\Http\Controllers\HumanResource\{
@@ -53,7 +54,7 @@ Route::post('/fingerprint/register', [FingerprintController::class, 'register'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
 
     //Attendance Management
     Route::get('/attendancemanagement', [AttendanceManagementController::class, 'index'])->name('attendancemanagement');
@@ -94,6 +95,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/employeeleavecard/{id}', [EmployeeLeaveCardController::class, 'update'])->name('employeeleavecard.update');
     Route::put('/vacationleaveupdate', [VacationLeaveController::class, 'update'])->name('vacation-leave.update');
     Route::put('/sickleaveupdate', [SickLeaveController::class, 'update'])->name('sick-leave.update');
+
+    // Department Heads
+    Route::get('/departmentheads', [DepartmentHeadController::class, 'index'])->name('departmenthead.index');
+    Route::post('/departmentheads/store', [DepartmentHeadController::class, 'store'])->name('departmenthead.store');
+    Route::patch('/department-head/{departmentHead}/toggle-status', [DepartmentHeadController::class, 'toggleStatus'])
+    ->name('departmenthead.toggle-status');
 
 
     // Profile
