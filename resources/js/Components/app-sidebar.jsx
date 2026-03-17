@@ -14,14 +14,11 @@ import {
     UserCog,
     LogOut,
     User,
-<<<<<<< HEAD
     Briefcase,
     FileText,
     Plane,
     MapPinned,
-=======
     FileUser,
->>>>>>> upstream/main
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
