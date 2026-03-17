@@ -7,6 +7,7 @@ use App\Http\Requests\StoreDepartmentHeadRequest;
 use App\Models\Administrator\Employee;
 use App\Models\DepartmentHead;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Throwable;
@@ -16,28 +17,26 @@ class DepartmentHeadController extends Controller
     public function index()
     {
         $query = DepartmentHead::query()
-            ->select('id', 'department', 'employee_id', 'status')
+            ->join('employees', 'department_heads.employee_id', '=', 'employees.id')
+            ->select('department_heads.id', 'department_heads.department', 'department_heads.employee_id', 'department_heads.status')
             ->when(request('department'), function ($q, $department) {
-                $q->where('department', $department);
+                $q->where('department_heads.department', $department);
             })
             ->when(request('status'), function ($q, $status) {
-                $q->where('status', $status);
+                $q->where('department_heads.status', $status);
+            })
+            ->when(request('search'), function ($q, $search) {
+                $q->where(function ($query) use ($search) {
+                    $query->where('employees.first_name', 'like', "%{$search}%")
+                        ->orWhere('employees.middle_name', 'like', "%{$search}%")
+                        ->orWhere('employees.last_name', 'like', "%{$search}%");
+                });
             });
-
-        $query->when(request('search'), function ($q, $search) {
-            $q->where(function ($query) use ($search) {
-                $query->where('head', function ($employee) use ($search) {
-                        $employee->where('first_name', 'like', "%{$search}%")
-                            ->orWhere('middle_name', 'like', "%{$search}%")
-                            ->orWhere('last_name', 'like', "%{$search}%");
-                    });
-            });
-
-        });
 
 
         $dept_heads = $query
             ->with('head:id,first_name,middle_name,last_name,position,department,work_type')
+            ->orderBy('employees.last_name')
             ->get();
 
         $employees = Employee::select('id', 'first_name','middle_name','last_name',  'work_type', 'position')->get();
@@ -123,6 +122,21 @@ class DepartmentHeadController extends Controller
             return response()->json([
                 'message' => 'Failed to update status.',
             ], 500);
+        }
+    }
+    public function destroy(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'password' => ['required', 'current_password'],
+            ]);
+
+            $deptHead = DepartmentHead::findOrFail($id);
+            $deptHead->delete();
+
+            return back()->with('success', 'Department head deleted successfully.');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to delete department head.');
         }
     }
 }
