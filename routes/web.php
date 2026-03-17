@@ -44,11 +44,14 @@ Route::get('/', function () {
 
 Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance');
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-Route::post('/fingerprint/register', [FingerprintController::class, 'register'])
+Route::get('/fingerprint/register', [FingerprintController::class, 'register'])
     ->name('fingerprint.register');
 
-Route::post('/fingerprint/test', [FingerprintController::class, 'test'])
-    ->name('fingerprint.test');
+Route::get('/fingerprint/test', function () {
+    return Inertia::render('FingerprintTest');
+})->name('fingerprint.test.page');
+Route::post('/fingerprint/test-three', [FingerprintController::class, 'testThree'])
+    ->name('fingerprint.testThree');
 
 /*
 |--------------------------------------------------------------------------
@@ -111,7 +114,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    
+
 
     Route::get('/services', function () {
     return Inertia::render('Services');
@@ -128,7 +131,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/locator-slip', function () {
         return Inertia::render('Employee/LocatorSlip/LocatorSlip');
     })->name('locatorslip');
-    
+
     // Show the locator slip page
     Route::get('employee/locator-slip', [LocatorSlipController::class, 'index'])
         ->name('locator-slips.index');
