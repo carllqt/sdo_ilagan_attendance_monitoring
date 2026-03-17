@@ -17,7 +17,7 @@
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'cipher' => 'AES-256-CBC',
-    'key' => 'base64:fDiIpIL0byOfNaYkQupQB+YaL6h5rNIze/irD3vMAO0=',
+    'key' => 'base64:KZked/PT4s3GkIt+A0LteY97+JSyTVQ9qXvlHsKVfxU=',
     'previous_keys' => 
     array (
     ),
@@ -163,8 +163,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\framework/cache/data',
-        'lock_path' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\framework/cache/data',
+        'lock_path' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -219,7 +219,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'sdo_ilagan_attendance',
+        'database' => 'sdo_monitoring_system',
         'prefix' => '',
         'foreign_key_constraints' => true,
         'busy_timeout' => NULL,
@@ -232,7 +232,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'sdo_ilagan_attendance',
+        'database' => 'sdo_monitoring_system',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -252,7 +252,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'sdo_ilagan_attendance',
+        'database' => 'sdo_monitoring_system',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -272,7 +272,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'sdo_ilagan_attendance',
+        'database' => 'sdo_monitoring_system',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -287,7 +287,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'sdo_ilagan_attendance',
+        'database' => 'sdo_monitoring_system',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -337,7 +337,7 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\app/private',
+        'root' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\app/private',
         'serve' => true,
         'throw' => false,
         'report' => false,
@@ -345,7 +345,7 @@
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\app/public',
+        'root' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
         'throw' => false,
@@ -367,7 +367,7 @@
     ),
     'links' => 
     array (
-      'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\public\\storage' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\app/public',
+      'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\public\\storage' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\app/public',
     ),
   ),
   'logging' => 
@@ -392,14 +392,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -464,13 +464,13 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\logs/laravel.log',
       ),
     ),
   ),
   'mail' => 
   array (
-    'default' => 'smtp',
+    'default' => 'log',
     'mailers' => 
     array (
       'smtp' => 
@@ -478,8 +478,8 @@
         'transport' => 'smtp',
         'scheme' => NULL,
         'url' => NULL,
-        'host' => 'mailpit',
-        'port' => '1025',
+        'host' => '127.0.0.1',
+        'port' => '2525',
         'username' => NULL,
         'password' => NULL,
         'timeout' => NULL,
@@ -542,7 +542,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -590,7 +590,7 @@
   ),
   'queue' => 
   array (
-    'default' => 'sync',
+    'default' => 'database',
     'connections' => 
     array (
       'sync' => 
@@ -675,11 +675,11 @@
   ),
   'session' => 
   array (
-    'driver' => 'file',
+    'driver' => 'database',
     'lifetime' => 120,
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -698,7 +698,7 @@
   ),
   'broadcasting' => 
   array (
-    'default' => 'null',
+    'default' => 'log',
     'connections' => 
     array (
       'reverb' => 
@@ -721,14 +721,14 @@
       'pusher' => 
       array (
         'driver' => 'pusher',
-        'key' => '',
-        'secret' => '',
-        'app_id' => '',
+        'key' => NULL,
+        'secret' => NULL,
+        'app_id' => NULL,
         'options' => 
         array (
-          'cluster' => 'mt1',
+          'cluster' => NULL,
           'host' => 'api-mt1.pusher.com',
-          'port' => '443',
+          'port' => 443,
           'scheme' => 'https',
           'encrypted' => true,
           'useTLS' => true,
@@ -789,7 +789,7 @@
     'driver' => 'bcrypt',
     'bcrypt' => 
     array (
-      'rounds' => 12,
+      'rounds' => '12',
       'verify' => true,
       'limit' => NULL,
     ),
@@ -806,64 +806,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\resources\\views',
+      0 => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\framework\\views',
-  ),
-  'dompdf' => 
-  array (
-    'show_warnings' => false,
-    'public_path' => NULL,
-    'convert_entities' => true,
-    'options' => 
-    array (
-      'font_dir' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\fonts',
-      'font_cache' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\arnie\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring',
-      'allowed_protocols' => 
-      array (
-        'data://' => 
-        array (
-          'rules' => 
-          array (
-          ),
-        ),
-        'file://' => 
-        array (
-          'rules' => 
-          array (
-          ),
-        ),
-        'http://' => 
-        array (
-          'rules' => 
-          array (
-          ),
-        ),
-        'https://' => 
-        array (
-          'rules' => 
-          array (
-          ),
-        ),
-      ),
-      'artifactPathValidation' => NULL,
-      'log_output_file' => NULL,
-      'enable_font_subsetting' => false,
-      'pdf_backend' => 'CPDF',
-      'default_media_type' => 'screen',
-      'default_paper_size' => 'a4',
-      'default_paper_orientation' => 'portrait',
-      'default_font' => 'serif',
-      'dpi' => 96,
-      'enable_php' => false,
-      'enable_javascript' => true,
-      'enable_remote' => false,
-      'allowed_remote_hosts' => NULL,
-      'font_height_ratio' => 1.1,
-      'enable_html5_parser' => true,
-    ),
+    'compiled' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\framework\\views',
   ),
   'inertia' => 
   array (
@@ -877,7 +822,7 @@
       'ensure_pages_exist' => true,
       'page_paths' => 
       array (
-        0 => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\resources\\js/Pages',
+        0 => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\resources\\js/Pages',
       ),
       'page_extensions' => 
       array (
@@ -1031,7 +976,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\Users\\arnie\\sdo_ilagan_attendance_monitoring\\storage\\framework/cache/laravel-excel',
+      'local_path' => 'C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\storage\\framework/cache/laravel-excel',
       'local_permissions' => 
       array (
       ),
