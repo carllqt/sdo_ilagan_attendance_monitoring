@@ -32,7 +32,7 @@ class FingerprintController extends Controller
 
             $normalizedTemplate = json_encode([
                 'captures' => array_map(
-                    fn($sample) => $this->normalizeSample($sample),
+                    fn ($sample) => $this->normalizeSample($sample),
                     $request->samples
                 ),
             ], JSON_UNESCAPED_SLASHES);
@@ -80,51 +80,17 @@ class FingerprintController extends Controller
         ]);
 
         try {
-            $sample = $request->samples[0];
-            $normalizedSample = $this->normalizeSample($sample);
+            $match = $this->findMatchingEmployeeFromSample($request->samples[0], 1);
 
-            Log::info('Fingerprint test incoming', [
-                'sample_preview' => substr($normalizedSample, 0, 150),
-                'sample_length' => strlen($normalizedSample),
-            ]);
-
-            $biometrics = Biometric::with('employee')->get();
-
-            foreach ($biometrics as $biometric) {
-                $storedTemplate = $this->normalizeStoredTemplate($biometric->fingerprint_template);
-
-                Log::info('Comparing fingerprint', [
-                    'biometric_id' => $biometric->id,
-                    'employee_id' => $biometric->employee_id,
-                    'stored_preview' => substr($storedTemplate, 0, 150),
-                    'stored_length' => strlen($storedTemplate),
-                    'is_equal' => $storedTemplate === $normalizedSample,
+            if ($match) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Fingerprint matched successfully.',
+                    'employee' => $match['employee'],
+                    'score' => $match['score'],
+                    'capture_index' => $match['capture_index'],
                 ]);
-
-                if ($storedTemplate === $normalizedSample) {
-                    Log::info('Fingerprint matched', [
-                        'employee_id' => $biometric->employee_id,
-                        'employee_name' => trim(
-                            $biometric->employee->first_name . ' ' .
-                                ($biometric->employee->middle_name ?? '') . ' ' .
-                                $biometric->employee->last_name
-                        ),
-                    ]);
-
-                    return response()->json([
-                        'success' => true,
-                        'employee' => [
-                            'first_name' => $biometric->employee->first_name,
-                            'middle_name' => $biometric->employee->middle_name,
-                            'last_name' => $biometric->employee->last_name,
-                            'position' => $biometric->employee->position,
-                            'department' => $biometric->employee->department,
-                        ],
-                    ]);
-                }
             }
-
-            Log::warning('No fingerprint match found');
 
             return response()->json([
                 'success' => false,
@@ -144,25 +110,126 @@ class FingerprintController extends Controller
             ], 500);
         }
     }
-
-    private function normalizeSample($sample): string
+    private function extractFingerprintMeta($sample): array
     {
-        // If sample is array/object, sort recursively and encode consistently
-        if (is_array($sample)) {
-            $sample = $this->sortRecursive($sample);
-            return json_encode($sample, JSON_UNESCAPED_SLASHES);
-        }
-
         if (is_string($sample)) {
-            return trim($sample);
+            $decoded = json_decode($sample, true);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $sample = $decoded;
+            } else {
+                return [
+                    'data_length' => strlen(trim($sample)),
+                    'data_preview' => substr(trim($sample), 0, 150),
+                    'version' => null,
+                    'type' => null,
+                    'quality' => null,
+                    'format_owner' => null,
+                    'format_id' => null,
+                ];
+            }
         }
 
-        return json_encode($sample, JSON_UNESCAPED_SLASHES);
-    }
+        if (is_object($sample)) {
+            $sample = (array) $sample;
+        }
 
-    private function normalizeStoredTemplate($template): string
+        $header = $sample['Header'] ?? [];
+        $format = $header['Format'] ?? [];
+
+        return [
+            'data_length' => strlen((string) ($sample['Data'] ?? '')),
+            'data_preview' => substr((string) ($sample['Data'] ?? ''), 0, 150),
+            'version' => $sample['Version'] ?? null,
+            'type' => $header['Type'] ?? null,
+            'quality' => $header['Quality'] ?? null,
+            'format_owner' => $format['FormatOwner'] ?? null,
+            'format_id' => $format['FormatID'] ?? null,
+        ];
+    }
+    public function testThree(Request $request)
     {
-        // handle BLOB/string safely
+        $request->validate([
+            'samples' => ['required', 'array', 'size:3'],
+        ]);
+
+        try {
+            $samples = $request->samples;
+
+            $normalized = array_map(
+                fn ($sample) => $this->extractFingerprintMeta($sample),
+                $samples
+            );
+
+            $allReceived = count($normalized) === 3
+                && collect($normalized)->every(fn ($item) => !empty($item['data_length']));
+
+            $sameVersion = count(array_unique(array_column($normalized, 'version'))) === 1;
+            $sameType = count(array_unique(array_column($normalized, 'type'))) === 1;
+            $sameFormatOwner = count(array_unique(array_column($normalized, 'format_owner'))) === 1;
+            $sameFormatId = count(array_unique(array_column($normalized, 'format_id'))) === 1;
+
+            Log::info('Fingerprint capture diagnostic', [
+                'all_received' => $allReceived,
+                'same_version' => $sameVersion,
+                'same_type' => $sameType,
+                'same_format_owner' => $sameFormatOwner,
+                'same_format_id' => $sameFormatId,
+                'samples' => $normalized,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Fingerprint samples captured successfully.',
+                'result' => [
+                    'ready_for_enrollment' => $allReceived,
+                    'capture_count' => count($normalized),
+                    'all_received' => $allReceived,
+                    'same_version' => $sameVersion,
+                    'same_type' => $sameType,
+                    'same_format_owner' => $sameFormatOwner,
+                    'same_format_id' => $sameFormatId,
+                    'samples' => $normalized,
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Fingerprint capture diagnostic failed', [
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Fingerprint capture diagnostic failed.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    private function normalizeFingerprintData($sample): string
+    {
+        if (is_string($sample)) {
+            $decoded = json_decode($sample, true);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $sample = $decoded;
+            } else {
+                return trim($sample);
+            }
+        }
+
+        if (is_object($sample)) {
+            $sample = (array) $sample;
+        }
+
+        if (is_array($sample)) {
+            return trim((string) ($sample['Data'] ?? json_encode($sample, JSON_UNESCAPED_SLASHES)));
+        }
+
+        return trim((string) $sample);
+    }
+    private function extractStoredCaptureData($template): array
+    {
         if (is_resource($template)) {
             $template = stream_get_contents($template);
         }
@@ -170,12 +237,144 @@ class FingerprintController extends Controller
         $template = (string) $template;
         $decoded = json_decode($template, true);
 
-        if (json_last_error() === JSON_ERROR_NONE) {
-            $decoded = $this->sortRecursive($decoded);
-            return json_encode($decoded, JSON_UNESCAPED_SLASHES);
+        if (!is_array($decoded)) {
+            return [];
         }
 
-        return trim($template);
+        $captures = $decoded['captures'] ?? [];
+
+        if (!is_array($captures)) {
+            return [];
+        }
+
+        return array_map(function ($capture) {
+            if (is_string($capture)) {
+                $decodedCapture = json_decode($capture, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $capture = $decodedCapture;
+                } else {
+                    return trim($capture);
+                }
+            }
+
+            if (is_object($capture)) {
+                $capture = (array) $capture;
+            }
+
+            if (is_array($capture)) {
+                return trim((string) ($capture['Data'] ?? json_encode($capture, JSON_UNESCAPED_SLASHES)));
+            }
+
+            return trim((string) $capture);
+        }, $captures);
+    }
+
+    private function findMatchingEmployeeFromSample($sample, int $testIndex = 1): ?array
+    {
+        $normalizedSample = $this->normalizeFingerprintData($sample);
+
+        Log::info('Fingerprint test incoming', [
+            'test_index' => $testIndex,
+            'sample_preview' => substr($normalizedSample, 0, 150),
+            'sample_length' => strlen($normalizedSample),
+        ]);
+
+        $biometrics = Biometric::with('employee')->get();
+
+        $bestMatch = null;
+        $highestScore = 0;
+
+        foreach ($biometrics as $biometric) {
+            $storedCaptures = $this->extractStoredCaptureData($biometric->fingerprint_template);
+
+            foreach ($storedCaptures as $captureIndex => $storedCapture) {
+                similar_text($storedCapture, $normalizedSample, $percent);
+
+                Log::info('Comparing fingerprint capture', [
+                    'test_index' => $testIndex,
+                    'biometric_id' => $biometric->id,
+                    'employee_id' => $biometric->employee_id,
+                    'capture_index' => $captureIndex + 1,
+                    'similarity_percent' => round($percent, 2),
+                ]);
+
+                if ($percent > $highestScore) {
+                    $highestScore = $percent;
+
+                    $bestMatch = [
+                        'employee_id' => $biometric->employee_id,
+                        'employee' => [
+                            'id' => $biometric->employee->id,
+                            'first_name' => $biometric->employee->first_name,
+                            'middle_name' => $biometric->employee->middle_name,
+                            'last_name' => $biometric->employee->last_name,
+                            'position' => $biometric->employee->position,
+                            'department' => $biometric->employee->department,
+                        ],
+                        'score' => round($percent, 2),
+                        'capture_index' => $captureIndex + 1,
+                    ];
+                }
+            }
+        }
+
+        Log::info('Fingerprint best candidate result', [
+            'test_index' => $testIndex,
+            'highest_score' => round($highestScore, 2),
+            'best_match_employee_id' => $bestMatch['employee_id'] ?? null,
+            'capture_index' => $bestMatch['capture_index'] ?? null,
+        ]);
+
+        return $bestMatch;
+    }
+
+    private function extractStoredCaptures($template): array
+    {
+        if (is_resource($template)) {
+            $template = stream_get_contents($template);
+        }
+
+        $template = (string) $template;
+        $decoded = json_decode($template, true);
+
+        if (!is_array($decoded)) {
+            return [];
+        }
+
+        $captures = $decoded['captures'] ?? [];
+
+        if (!is_array($captures)) {
+            return [];
+        }
+
+        return array_map(function ($capture) {
+            return $this->normalizeSample($capture);
+        }, $captures);
+    }
+
+    private function normalizeSample($sample): string
+    {
+        if (is_string($sample)) {
+            $decoded = json_decode($sample, true);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $sample = $decoded;
+            } else {
+                return trim($sample);
+            }
+        }
+
+        if (is_object($sample)) {
+            $sample = (array) $sample;
+        }
+
+        if (is_array($sample)) {
+            $sample = $this->sortRecursive($sample);
+            return json_encode($sample, JSON_UNESCAPED_SLASHES);
+        }
+
+        return json_encode($sample, JSON_UNESCAPED_SLASHES);
     }
 
     private function sortRecursive($data)

@@ -3,7 +3,7 @@
 import React from "react";
 import { useForm } from "@inertiajs/react";
 
-export default function LocatorSlipForm({ onClose }) {
+export default function LocatorSlipForm({ onClose, employee }) {
     const { data, setData, post, processing, reset, errors } = useForm({
         purpose_of_travel: "",
         destination: "",
@@ -13,6 +13,7 @@ export default function LocatorSlipForm({ onClose }) {
 
     const submit = (e) => {
         e.preventDefault();
+
         post("/employee/locator-slip", {
             onSuccess: () => {
                 reset();
@@ -23,9 +24,9 @@ export default function LocatorSlipForm({ onClose }) {
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
-            <div className="bg-white w-[720px] rounded-2xl shadow-2xl p-8 max-h-[90vh] overflow-y-auto">
-                <div className="text-center mb-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+            <div className="max-h-[90vh] w-[720px] overflow-y-auto rounded-2xl bg-white p-8 shadow-2xl">
+                <div className="mb-6 text-center">
                     <h2 className="text-2xl font-bold text-gray-800">
                         Locator Slip
                     </h2>
@@ -38,32 +39,40 @@ export default function LocatorSlipForm({ onClose }) {
                     {/* Employee Info */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="text-sm text-gray-600 font-medium">
+                            <label className="text-sm font-medium text-gray-600">
                                 Name
                             </label>
                             <input
-                                className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
-                                value="Maria Anita I. Espiritu"
+                                className="mt-1 w-full rounded-lg border bg-gray-100 p-2"
+                                value={
+                                    employee?.full_name || employee?.name || ""
+                                }
                                 readOnly
                             />
                         </div>
+
                         <div>
-                            <label className="text-sm text-gray-600 font-medium">
+                            <label className="text-sm font-medium text-gray-600">
                                 Position / Designation
                             </label>
                             <input
-                                className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
-                                value="Administrative Officer II"
+                                className="mt-1 w-full rounded-lg border bg-gray-100 p-2"
+                                value={employee?.position || ""}
                                 readOnly
                             />
                         </div>
+
                         <div className="col-span-2">
-                            <label className="text-sm text-gray-600 font-medium">
+                            <label className="text-sm font-medium text-gray-600">
                                 Permanent Station
                             </label>
                             <input
-                                className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
-                                value="SDO City of Ilagan"
+                                className="mt-1 w-full rounded-lg border bg-gray-100 p-2"
+                                value={
+                                    employee?.station ||
+                                    employee?.permanent_station ||
+                                    ""
+                                }
                                 readOnly
                             />
                         </div>
@@ -76,14 +85,14 @@ export default function LocatorSlipForm({ onClose }) {
                         </label>
                         <input
                             type="text"
-                            className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="mt-1 w-full rounded-lg border p-2 outline-none focus:ring-2 focus:ring-blue-500"
                             value={data.purpose_of_travel}
                             onChange={(e) =>
                                 setData("purpose_of_travel", e.target.value)
                             }
                         />
                         {errors.purpose_of_travel && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="mt-1 text-sm text-red-500">
                                 {errors.purpose_of_travel}
                             </p>
                         )}
@@ -94,8 +103,8 @@ export default function LocatorSlipForm({ onClose }) {
                         <label className="text-sm font-medium text-gray-700">
                             Travel Type
                         </label>
-                        <div className="flex gap-6 mt-2">
-                            <label className="flex items-center gap-2 cursor-pointer">
+                        <div className="mt-2 flex gap-6">
+                            <label className="flex cursor-pointer items-center gap-2">
                                 <input
                                     type="radio"
                                     name="check_type"
@@ -110,7 +119,7 @@ export default function LocatorSlipForm({ onClose }) {
                                 Official Business
                             </label>
 
-                            <label className="flex items-center gap-2 cursor-pointer">
+                            <label className="flex cursor-pointer items-center gap-2">
                                 <input
                                     type="radio"
                                     name="check_type"
@@ -125,8 +134,9 @@ export default function LocatorSlipForm({ onClose }) {
                                 Official Time
                             </label>
                         </div>
+
                         {errors.check_type && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="mt-1 text-sm text-red-500">
                                 {errors.check_type}
                             </p>
                         )}
@@ -140,14 +150,14 @@ export default function LocatorSlipForm({ onClose }) {
                             </label>
                             <input
                                 type="datetime-local"
-                                className="w-full mt-1 p-2 border rounded-lg"
+                                className="mt-1 w-full rounded-lg border p-2"
                                 value={data.date_time}
                                 onChange={(e) =>
                                     setData("date_time", e.target.value)
                                 }
                             />
                             {errors.date_time && (
-                                <p className="text-red-500 text-sm mt-1">
+                                <p className="mt-1 text-sm text-red-500">
                                     {errors.date_time}
                                 </p>
                             )}
@@ -159,14 +169,14 @@ export default function LocatorSlipForm({ onClose }) {
                             </label>
                             <input
                                 type="text"
-                                className="w-full mt-1 p-2 border rounded-lg"
+                                className="mt-1 w-full rounded-lg border p-2"
                                 value={data.destination}
                                 onChange={(e) =>
                                     setData("destination", e.target.value)
                                 }
                             />
                             {errors.destination && (
-                                <p className="text-red-500 text-sm mt-1">
+                                <p className="mt-1 text-sm text-red-500">
                                     {errors.destination}
                                 </p>
                             )}
@@ -174,21 +184,22 @@ export default function LocatorSlipForm({ onClose }) {
                     </div>
 
                     {/* Buttons */}
-                    <div className="flex justify-between gap-3 pt-4 border-t">
+                    <div className="flex justify-between gap-3 border-t pt-4">
                         <div className="flex gap-2">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="px-4 py-2 border rounded-lg"
+                                className="rounded-lg border px-4 py-2"
                             >
                                 Cancel
                             </button>
+
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="px-5 py-2 bg-blue-600 text-white rounded-lg"
+                                className="rounded-lg bg-blue-600 px-5 py-2 text-white disabled:opacity-50"
                             >
-                                Submit
+                                {processing ? "Submitting..." : "Submit"}
                             </button>
                         </div>
                     </div>
