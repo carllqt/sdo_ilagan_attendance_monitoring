@@ -33,7 +33,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::m9Fl5drngFwawaR7',
+            '_route' => 'generated::gMxsbvnSYiuSwes4',
           ),
           1 => NULL,
           2 => 
@@ -53,7 +53,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::9Tkcz4iMU1HJGYkh',
+            '_route' => 'generated::hpu1rvqs5qUWkel1',
           ),
           1 => NULL,
           2 => 
@@ -113,7 +113,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::kByfVax14Sd0Pm7C',
+            '_route' => 'generated::zrxnUo6vG6JpTcBh',
           ),
           1 => NULL,
           2 => 
@@ -207,7 +207,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::oT80qIe2AoRtbLkp',
+            '_route' => 'generated::fS3BXybq4Xxo527e',
           ),
           1 => NULL,
           2 => 
@@ -416,6 +416,45 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/departmentheads' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'departmenthead.index',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/departmentheads/store' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'departmenthead.store',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/profile' => 
       array (
         0 => 
@@ -491,7 +530,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::SYls0if1cyXWtbWf',
+            '_route' => 'generated::wzUXu0L6QOfJZoXC',
           ),
           1 => NULL,
           2 => 
@@ -527,7 +566,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::TLKKxv7vKJkEUoyE',
+            '_route' => 'generated::GB8DPrTtyLN71alt',
           ),
           1 => NULL,
           2 => 
@@ -657,7 +696,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::zcHecuEETGKWNuHt',
+            '_route' => 'generated::YOOsUFFAyVdUUfXo',
           ),
           1 => NULL,
           2 => 
@@ -711,7 +750,7 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/attendancemanagement/([^/]++)/update(*:44)|/dailytimerecord/(?|([^/\\-]++)\\-([^/]++)(*:91)|details/([^/]++)(*:114))|/tardyarchieve/([^/]++)(*:146)|/employee(?|edit/([^/]++)(*:179)|leavecard/(?|([^/\\-]++)\\-([^/]++)(*:220)|([^/]++)(*:236)))|/reset\\-password/([^/]++)(*:271)|/verify\\-email/([^/]++)/([^/]++)(*:311)|/storage/(.*)(*:332))/?$}sDu',
+      0 => '{^(?|/attendancemanagement/([^/]++)/update(*:44)|/d(?|ailytimerecord/(?|([^/\\-]++)\\-([^/]++)(*:94)|details/([^/]++)(*:117))|epartment\\-head/([^/]++)/toggle\\-status(*:165))|/tardyarchieve/([^/]++)(*:197)|/employee(?|edit/([^/]++)(*:230)|leavecard/(?|([^/\\-]++)\\-([^/]++)(*:271)|([^/]++)(*:287)))|/reset\\-password/([^/]++)(*:322)|/verify\\-email/([^/]++)/([^/]++)(*:362)|/storage/(.*)(*:383))/?$}sDu',
     ),
     3 => 
     array (
@@ -737,7 +776,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      91 => 
+      94 => 
       array (
         0 => 
         array (
@@ -761,7 +800,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      114 => 
+      117 => 
       array (
         0 => 
         array (
@@ -784,7 +823,29 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      146 => 
+      165 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'departmenthead.toggle-status',
+          ),
+          1 => 
+          array (
+            0 => 'departmentHead',
+          ),
+          2 => 
+          array (
+            'PATCH' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      197 => 
       array (
         0 => 
         array (
@@ -807,7 +868,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      179 => 
+      230 => 
       array (
         0 => 
         array (
@@ -829,7 +890,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      220 => 
+      271 => 
       array (
         0 => 
         array (
@@ -853,7 +914,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      236 => 
+      287 => 
       array (
         0 => 
         array (
@@ -875,7 +936,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      271 => 
+      322 => 
       array (
         0 => 
         array (
@@ -898,7 +959,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      311 => 
+      362 => 
       array (
         0 => 
         array (
@@ -922,7 +983,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      332 => 
+      383 => 
       array (
         0 => 
         array (
@@ -997,7 +1058,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::m9Fl5drngFwawaR7' => 
+    'generated::gMxsbvnSYiuSwes4' => 
     array (
       'methods' => 
       array (
@@ -1025,8 +1086,8 @@ app('router')->setCompiledRoutes(
                     return response(\\Illuminate\\Support\\Facades\\View::file(\'C:\\\\Users\\\\Teacher\\\\sdo_ilagan_attendance_monitoring\\\\vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Foundation\\\\Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000005b80000000000000000";}}',
-        'as' => 'generated::m9Fl5drngFwawaR7',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000005830000000000000000";}}',
+        'as' => 'generated::gMxsbvnSYiuSwes4',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1042,7 +1103,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::9Tkcz4iMU1HJGYkh' => 
+    'generated::hpu1rvqs5qUWkel1' => 
     array (
       'methods' => 
       array (
@@ -1066,13 +1127,13 @@ app('router')->setCompiledRoutes(
         \'laravelVersion\'   => \\Illuminate\\Foundation\\Application::VERSION,
         \'phpVersion\'       => PHP_VERSION,
     ]);
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000005bc0000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000005870000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::9Tkcz4iMU1HJGYkh',
+        'as' => 'generated::hpu1rvqs5qUWkel1',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1162,7 +1223,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::kByfVax14Sd0Pm7C' => 
+    'generated::zrxnUo6vG6JpTcBh' => 
     array (
       'methods' => 
       array (
@@ -1183,7 +1244,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::kByfVax14Sd0Pm7C',
+        'as' => 'generated::zrxnUo6vG6JpTcBh',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1249,7 +1310,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\AttendanceManagementController@index',
         'controller' => 'App\\Http\\Controllers\\Administrator\\AttendanceManagementController@index',
@@ -1287,7 +1348,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\AttendanceManagementController@update',
         'controller' => 'App\\Http\\Controllers\\Administrator\\AttendanceManagementController@update',
@@ -1325,7 +1386,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\AttendanceManagementController@store',
         'controller' => 'App\\Http\\Controllers\\Administrator\\AttendanceManagementController@store',
@@ -1363,7 +1424,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\EmployeeLeaveController@store',
         'controller' => 'App\\Http\\Controllers\\EmployeeLeaveController@store',
@@ -1388,7 +1449,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::oT80qIe2AoRtbLkp' => 
+    'generated::fS3BXybq4Xxo527e' => 
     array (
       'methods' => 
       array (
@@ -1401,7 +1462,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\EmployeeLeaveController@destroy',
         'controller' => 'App\\Http\\Controllers\\EmployeeLeaveController@destroy',
@@ -1410,7 +1471,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::oT80qIe2AoRtbLkp',
+        'as' => 'generated::fS3BXybq4Xxo527e',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1440,7 +1501,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\DailyTimeRecordController@index',
         'controller' => 'App\\Http\\Controllers\\Administrator\\DailyTimeRecordController@index',
@@ -1479,7 +1540,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\DailyTimeRecordController@show',
         'controller' => 'App\\Http\\Controllers\\Administrator\\DailyTimeRecordController@show',
@@ -1518,7 +1579,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\DailyTimeRecordController@details',
         'controller' => 'App\\Http\\Controllers\\Administrator\\DailyTimeRecordController@details',
@@ -1557,7 +1618,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\TardinessRecordController@index',
         'controller' => 'App\\Http\\Controllers\\Administrator\\TardinessRecordController@index',
@@ -1596,7 +1657,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\ConvertedTardyRecordsController@index',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\ConvertedTardyRecordsController@index',
@@ -1635,7 +1696,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\ConvertedTardyRecordsController@show',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\ConvertedTardyRecordsController@show',
@@ -1674,7 +1735,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\TardyConvertionController@index',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\TardyConvertionController@index',
@@ -1712,7 +1773,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\TardyConvertionController@store',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\TardyConvertionController@store',
@@ -1751,7 +1812,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\EmployeeManagementController@index',
         'controller' => 'App\\Http\\Controllers\\Administrator\\EmployeeManagementController@index',
@@ -1789,7 +1850,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\EmployeeManagementController@store',
         'controller' => 'App\\Http\\Controllers\\Administrator\\EmployeeManagementController@store',
@@ -1827,7 +1888,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\Administrator\\EmployeeManagementController@update',
         'controller' => 'App\\Http\\Controllers\\Administrator\\EmployeeManagementController@update',
@@ -1866,7 +1927,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\EmployeeLeaveCardController@index',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\EmployeeLeaveCardController@index',
@@ -1905,7 +1966,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\EmployeeLeaveCardController@show',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\EmployeeLeaveCardController@show',
@@ -1943,7 +2004,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\EmployeeLeaveCardController@update',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\EmployeeLeaveCardController@update',
@@ -1981,7 +2042,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\VacationLeaveController@update',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\VacationLeaveController@update',
@@ -2019,7 +2080,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\HumanResource\\SickLeaveController@update',
         'controller' => 'App\\Http\\Controllers\\HumanResource\\SickLeaveController@update',
@@ -2029,6 +2090,121 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'sick-leave.update',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'departmenthead.index' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'departmentheads',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'role:admin',
+        ),
+        'uses' => 'App\\Http\\Controllers\\Administrator\\DepartmentHeadController@index',
+        'controller' => 'App\\Http\\Controllers\\Administrator\\DepartmentHeadController@index',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'departmenthead.index',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'departmenthead.store' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'departmentheads/store',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'role:admin',
+        ),
+        'uses' => 'App\\Http\\Controllers\\Administrator\\DepartmentHeadController@store',
+        'controller' => 'App\\Http\\Controllers\\Administrator\\DepartmentHeadController@store',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'departmenthead.store',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'departmenthead.toggle-status' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'PATCH',
+      ),
+      'uri' => 'department-head/{departmentHead}/toggle-status',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'role:admin',
+        ),
+        'uses' => 'App\\Http\\Controllers\\Administrator\\DepartmentHeadController@toggleStatus',
+        'controller' => 'App\\Http\\Controllers\\Administrator\\DepartmentHeadController@toggleStatus',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'departmenthead.toggle-status',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2058,7 +2234,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\ProfileController@edit',
         'controller' => 'App\\Http\\Controllers\\ProfileController@edit',
@@ -2096,7 +2272,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\ProfileController@update',
         'controller' => 'App\\Http\\Controllers\\ProfileController@update',
@@ -2134,7 +2310,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
           1 => 'auth',
-          2 => 'verified',
+          2 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\ProfileController@destroy',
         'controller' => 'App\\Http\\Controllers\\ProfileController@destroy',
@@ -2197,7 +2373,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::SYls0if1cyXWtbWf' => 
+    'generated::wzUXu0L6QOfJZoXC' => 
     array (
       'methods' => 
       array (
@@ -2218,7 +2394,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::SYls0if1cyXWtbWf',
+        'as' => 'generated::wzUXu0L6QOfJZoXC',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2272,7 +2448,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::TLKKxv7vKJkEUoyE' => 
+    'generated::GB8DPrTtyLN71alt' => 
     array (
       'methods' => 
       array (
@@ -2293,7 +2469,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::TLKKxv7vKJkEUoyE',
+        'as' => 'generated::GB8DPrTtyLN71alt',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2613,7 +2789,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::zcHecuEETGKWNuHt' => 
+    'generated::YOOsUFFAyVdUUfXo' => 
     array (
       'methods' => 
       array (
@@ -2634,7 +2810,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::zcHecuEETGKWNuHt',
+        'as' => 'generated::YOOsUFFAyVdUUfXo',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2740,7 +2916,7 @@ app('router')->setCompiledRoutes(
                         $config,
                         $isProduction
                     ))($request, $path);
-                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"00000000000005c20000000000000000";}}',
+                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"000000000000058d0000000000000000";}}',
         'as' => 'storage.local',
       ),
       'fallback' => false,
