@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { usePage } from "@inertiajs/react";
+import { usePage, Link } from "@inertiajs/react";
 import {
     CalendarDays,
     ChevronDown,
@@ -9,16 +9,21 @@ import {
     Clock,
     Archive,
     CalendarClock,
-    CalendarCheck,
     ArrowLeftRight,
     UserCircle,
     UserCog,
     LogOut,
     User,
+<<<<<<< HEAD
+    Briefcase,
+    FileText,
+    Plane,
+    MapPinned,
+=======
     FileUser,
+>>>>>>> upstream/main
 } from "lucide-react";
 
-import { Link } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import {
     Sidebar,
@@ -45,11 +50,13 @@ import ApplicationLogo from "./ApplicationLogo";
 export function AppSidebar({ active, user, ...props }) {
     const [isAdminOpen, setAdminOpen] = useState(true);
     const [isHROpen, setHROpen] = useState(true);
+    const [isEmployeeOpen, setEmployeeOpen] = useState(true);
+    const [isServicesOpen, setServicesOpen] = useState(true);
+
     const { url } = usePage();
 
     return (
         <Sidebar {...props}>
-            {/* Header */}
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -58,7 +65,7 @@ export function AppSidebar({ active, user, ...props }) {
                                 href="/"
                                 className="flex items-center gap-4 bg-blue-700 hover:shadow-lg px-8 py-11 text-white w-full"
                             >
-                                <div className="flex size-11 aspect-square items-center justify-cente text-primary-foreground">
+                                <div className="flex size-11 aspect-square items-center justify-center text-primary-foreground">
                                     <ApplicationLogo className="h-11 w-auto" />
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-tight text-white">
@@ -76,11 +83,10 @@ export function AppSidebar({ active, user, ...props }) {
                 </SidebarMenu>
             </SidebarHeader>
 
-            {/* Main Menu */}
             <SidebarContent className="bg-blue-700 text-white rounded-lg m-2 p-2">
                 <SidebarGroup>
                     <SidebarMenu>
-                        {/* Collapsible Attendance Monitoring Section */}
+                        {/* Administrator */}
                         <SidebarMenuItem>
                             <Button
                                 variant="ghost"
@@ -232,6 +238,7 @@ export function AppSidebar({ active, user, ...props }) {
                             )}
                         </SidebarMenuItem>
 
+                        {/* Human Resource */}
                         <SidebarMenuItem>
                             <Button
                                 variant="ghost"
@@ -281,7 +288,7 @@ export function AppSidebar({ active, user, ...props }) {
                                             isActive={
                                                 active === "tardyarchieve" ||
                                                 active === "batch-record"
-                                            } // ✅ check both
+                                            }
                                         >
                                             <Link
                                                 href={route("tardyarchieve")}
@@ -312,6 +319,7 @@ export function AppSidebar({ active, user, ...props }) {
                                             </Link>
                                         </SidebarMenuSubButton>
                                     </SidebarMenuSubItem>
+
                                     <SidebarMenuSubItem>
                                         <SidebarMenuSubButton
                                             asChild
@@ -341,6 +349,130 @@ export function AppSidebar({ active, user, ...props }) {
                                 </SidebarMenuSub>
                             )}
                         </SidebarMenuItem>
+
+                        {/* Employee */}
+                        <SidebarMenuItem>
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-between px-3 py-2 text-left font-semibold hover:bg-blue-900 hover:text-blue-100"
+                                onClick={() => setEmployeeOpen(!isEmployeeOpen)}
+                            >
+                                <span className="flex items-center gap-2">
+                                    <User className="h-5 w-5" />
+                                    Employee
+                                </span>
+                                {isEmployeeOpen ? (
+                                    <ChevronDown className="h-4 w-4" />
+                                ) : (
+                                    <ChevronRight className="h-4 w-4" />
+                                )}
+                            </Button>
+
+                            {isEmployeeOpen && (
+                                <SidebarMenuSub>
+                                    <SidebarMenuSubItem>
+                                        <Button
+                                            variant="ghost"
+                                            className="w-full justify-between px-3 py-2 text-left text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                            onClick={() =>
+                                                setServicesOpen(!isServicesOpen)
+                                            }
+                                        >
+                                            <span className="flex items-center gap-2">
+                                                <Briefcase className="h-4 w-4" />
+                                                Services
+                                            </span>
+                                            {isServicesOpen ? (
+                                                <ChevronDown className="h-4 w-4" />
+                                            ) : (
+                                                <ChevronRight className="h-4 w-4" />
+                                            )}
+                                        </Button>
+
+                                        {isServicesOpen && (
+                                            <SidebarMenuSub>
+                                                <SidebarMenuSubItem>
+                                                    <SidebarMenuSubButton
+                                                        asChild
+                                                        isActive={
+                                                            active ===
+                                                            "printdtr"
+                                                        }
+                                                    >
+                                                        <Link
+                                                            href={route(
+                                                                "printdtr",
+                                                            )}
+                                                            className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                                        >
+                                                            <FileText
+                                                                className={`h-4 w-4 ${
+                                                                    active ===
+                                                                    "printdtr"
+                                                                        ? "!text-black"
+                                                                        : "!text-white"
+                                                                }`}
+                                                            />
+                                                            Print DTR
+                                                        </Link>
+                                                    </SidebarMenuSubButton>
+                                                </SidebarMenuSubItem>
+
+                                                <SidebarMenuSubItem>
+                                                    <SidebarMenuSubButton
+                                                        asChild
+                                                        isActive={
+                                                            active ===
+                                                            "travelorder"
+                                                        }
+                                                    >
+                                                        <Link
+                                                            href={route(
+                                                                "travelorder",
+                                                            )}
+                                                            className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                                        >
+                                                            <Plane
+                                                                className={`h-4 w-4 ${
+                                                                    active ===
+                                                                    "travelorder"
+                                                                        ? "!text-black"
+                                                                        : "!text-white"
+                                                                }`}
+                                                            />
+                                                            Travel Order
+                                                        </Link>
+                                                    </SidebarMenuSubButton>
+                                                </SidebarMenuSubItem>
+
+                                                <SidebarMenuSubItem>
+                                                    <SidebarMenuSubButton
+                                                        asChild
+                                                        isActive={active}
+                                                    >
+                                                        <Link
+                                                            href={route(
+                                                                "locator-slips.index",
+                                                            )} // <-- use correct route name
+                                                            className={`flex items-center gap-2 text-xs p-2 rounded ${
+                                                                active
+                                                                    ? "bg-blue-100 text-black"
+                                                                    : "text-white hover:bg-blue-900 hover:text-blue-100"
+                                                            }`}
+                                                        >
+                                                            <MapPinned
+                                                                className={`h-4 w-4 ${active ? "!text-black" : "!text-white"}`}
+                                                            />
+                                                            Locator Slip
+                                                        </Link>
+                                                    </SidebarMenuSubButton>
+                                                </SidebarMenuSubItem>
+                                            </SidebarMenuSub>
+                                        )}
+                                    </SidebarMenuSubItem>
+                                </SidebarMenuSub>
+                            )}
+                        </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarGroup>
 
@@ -358,10 +490,8 @@ export function AppSidebar({ active, user, ...props }) {
                                             {user.name}
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent
-                                        align="start"
-                                        className="hover:bg-blue-900"
-                                    >
+
+                                    <DropdownMenuContent align="start">
                                         <DropdownMenuItem asChild>
                                             <Link
                                                 href={route("profile.edit")}
@@ -371,6 +501,7 @@ export function AppSidebar({ active, user, ...props }) {
                                                 Profile
                                             </Link>
                                         </DropdownMenuItem>
+
                                         <DropdownMenuItem asChild>
                                             <Link
                                                 href={route("logout")}
