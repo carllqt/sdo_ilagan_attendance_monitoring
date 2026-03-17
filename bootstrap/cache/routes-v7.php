@@ -33,7 +33,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::8BgCyvD0k8LZbBIj',
+            '_route' => 'generated::yrrBvErao7CwoJAN',
           ),
           1 => NULL,
           2 => 
@@ -53,7 +53,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::OndSNBwHggwI7T4i',
+            '_route' => 'generated::Q8hNKWErjxJHuNwk',
           ),
           1 => NULL,
           2 => 
@@ -206,7 +206,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::DRF7qOM83XZSarM0',
+            '_route' => 'generated::QOsXhnrm4llMRECz',
           ),
           1 => NULL,
           2 => 
@@ -529,7 +529,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Jioly6XpdVsO5Jqx',
+            '_route' => 'generated::ulMLXMhl15UJfVdF',
           ),
           1 => NULL,
           2 => 
@@ -565,7 +565,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::lTHAuvVeiyZ4yfTa',
+            '_route' => 'generated::TkXhWtAdJHEpCvF5',
           ),
           1 => NULL,
           2 => 
@@ -695,7 +695,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::2SnLKXt31SzKtpNI',
+            '_route' => 'generated::Zycn0S6W7rpHZjPr',
           ),
           1 => NULL,
           2 => 
@@ -749,7 +749,7 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/attendancemanagement/([^/]++)/update(*:44)|/d(?|ailytimerecord/(?|([^/\\-]++)\\-([^/]++)(*:94)|details/([^/]++)(*:117))|epartment\\-head/([^/]++)/toggle\\-status(*:165))|/tardyarchieve/([^/]++)(*:197)|/employee(?|edit/([^/]++)(*:230)|leavecard/(?|([^/\\-]++)\\-([^/]++)(*:271)|([^/]++)(*:287)))|/reset\\-password/([^/]++)(*:322)|/verify\\-email/([^/]++)/([^/]++)(*:362)|/storage/(.*)(*:383))/?$}sDu',
+      0 => '{^(?|/attendancemanagement/([^/]++)/update(*:44)|/d(?|ailytimerecord/(?|([^/\\-]++)\\-([^/]++)(*:94)|details/([^/]++)(*:117))|epartment(?|\\-head/([^/]++)/toggle\\-status(*:168)|heads/delete/([^/]++)(*:197)))|/tardyarchieve/([^/]++)(*:230)|/employee(?|edit/([^/]++)(*:263)|leavecard/(?|([^/\\-]++)\\-([^/]++)(*:304)|([^/]++)(*:320)))|/reset\\-password/([^/]++)(*:355)|/verify\\-email/([^/]++)/([^/]++)(*:395)|/storage/(.*)(*:416))/?$}sDu',
     ),
     3 => 
     array (
@@ -822,7 +822,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      165 => 
+      168 => 
       array (
         0 => 
         array (
@@ -850,6 +850,28 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
+            '_route' => 'departmenthead.destroy',
+          ),
+          1 => 
+          array (
+            0 => 'emp_id',
+          ),
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+      ),
+      230 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
             '_route' => 'batch-record',
           ),
           1 => 
@@ -867,7 +889,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      230 => 
+      263 => 
       array (
         0 => 
         array (
@@ -889,7 +911,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      271 => 
+      304 => 
       array (
         0 => 
         array (
@@ -913,7 +935,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      287 => 
+      320 => 
       array (
         0 => 
         array (
@@ -935,7 +957,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      322 => 
+      355 => 
       array (
         0 => 
         array (
@@ -958,7 +980,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      362 => 
+      395 => 
       array (
         0 => 
         array (
@@ -982,7 +1004,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      383 => 
+      416 => 
       array (
         0 => 
         array (
@@ -1057,7 +1079,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::8BgCyvD0k8LZbBIj' => 
+    'generated::yrrBvErao7CwoJAN' => 
     array (
       'methods' => 
       array (
@@ -1085,8 +1107,8 @@ app('router')->setCompiledRoutes(
                     return response(\\Illuminate\\Support\\Facades\\View::file(\'C:\\\\Users\\\\Teacher\\\\sdo_ilagan_attendance_monitoring\\\\vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Foundation\\\\Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000005ef0000000000000000";}}',
-        'as' => 'generated::8BgCyvD0k8LZbBIj',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000005830000000000000000";}}',
+        'as' => 'generated::yrrBvErao7CwoJAN',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1102,7 +1124,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::OndSNBwHggwI7T4i' => 
+    'generated::Q8hNKWErjxJHuNwk' => 
     array (
       'methods' => 
       array (
@@ -1126,13 +1148,13 @@ app('router')->setCompiledRoutes(
         \'laravelVersion\'   => \\Illuminate\\Foundation\\Application::VERSION,
         \'phpVersion\'       => PHP_VERSION,
     ]);
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000005f30000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000005870000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::OndSNBwHggwI7T4i',
+        'as' => 'generated::Q8hNKWErjxJHuNwk',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1447,7 +1469,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::DRF7qOM83XZSarM0' => 
+    'generated::QOsXhnrm4llMRECz' => 
     array (
       'methods' => 
       array (
@@ -1469,7 +1491,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::DRF7qOM83XZSarM0',
+        'as' => 'generated::QOsXhnrm4llMRECz',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2218,6 +2240,44 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
+    'departmenthead.destroy' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'departmentheads/delete/{emp_id}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'role:admin',
+        ),
+        'uses' => 'App\\Http\\Controllers\\Administrator\\DepartmentHeadController@destroy',
+        'controller' => 'App\\Http\\Controllers\\Administrator\\DepartmentHeadController@destroy',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'departmenthead.destroy',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
     'profile.edit' => 
     array (
       'methods' => 
@@ -2371,7 +2431,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Jioly6XpdVsO5Jqx' => 
+    'generated::ulMLXMhl15UJfVdF' => 
     array (
       'methods' => 
       array (
@@ -2392,7 +2452,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::Jioly6XpdVsO5Jqx',
+        'as' => 'generated::ulMLXMhl15UJfVdF',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2446,7 +2506,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::lTHAuvVeiyZ4yfTa' => 
+    'generated::TkXhWtAdJHEpCvF5' => 
     array (
       'methods' => 
       array (
@@ -2467,7 +2527,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::lTHAuvVeiyZ4yfTa',
+        'as' => 'generated::TkXhWtAdJHEpCvF5',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2787,7 +2847,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::2SnLKXt31SzKtpNI' => 
+    'generated::Zycn0S6W7rpHZjPr' => 
     array (
       'methods' => 
       array (
@@ -2808,7 +2868,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::2SnLKXt31SzKtpNI',
+        'as' => 'generated::Zycn0S6W7rpHZjPr',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2914,7 +2974,7 @@ app('router')->setCompiledRoutes(
                         $config,
                         $isProduction
                     ))($request, $path);
-                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"00000000000005f90000000000000000";}}',
+                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"000000000000058d0000000000000000";}}',
         'as' => 'storage.local',
       ),
       'fallback' => false,

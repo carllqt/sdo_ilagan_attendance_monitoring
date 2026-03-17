@@ -103,6 +103,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/departmentheads/store', [DepartmentHeadController::class, 'store'])->name('departmenthead.store');
     Route::patch('/department-head/{departmentHead}/toggle-status', [DepartmentHeadController::class, 'toggleStatus'])
     ->name('departmenthead.toggle-status');
+    Route::delete('/departmentheads/delete/{id}', [DepartmentHeadController::class, 'destroy'])->name('departmenthead.destroy');
 
 
     // Profile

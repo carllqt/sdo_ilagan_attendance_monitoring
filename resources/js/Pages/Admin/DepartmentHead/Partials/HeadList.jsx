@@ -23,6 +23,7 @@ import { DEPARTMENT_OPTIONS, HEAD_STATUS_OPTIONS } from "@/constants";
 import { router } from "@inertiajs/react";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import ConfirmPasswordDialog from "@/Components/ConfirmPasswordDialog";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -45,6 +46,10 @@ const HeadList = ({ dept_heads, queryParams: rawParams }) => {
     const handlePageChange = (page) => {
         if (page < 1 || page > totalPages) return;
         setCurrentPage(page);
+    };
+
+    const handleRemove = (id) => {
+        router.delete(route("departmenthead.destroy", id));
     };
 
     return (
@@ -124,13 +129,30 @@ const HeadList = ({ dept_heads, queryParams: rawParams }) => {
                                 />
                             </TableCell>
                             <TableCell className="flex justify-center gap-2">
-                                <Button
-                                    variant="destructive"
-                                    size="icon"
-                                    className="rounded-full text-black hover:bg-red-400 hover:text-white"
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
+                                <ConfirmPasswordDialog
+                                    trigger={
+                                        <Button
+                                            variant="destructive"
+                                            size="icon"
+                                            className="rounded-full text-black hover:bg-red-400 hover:text-white"
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    }
+                                    title="Delete Department Head"
+                                    description="You are about to permanently remove this department head assignment."
+                                    itemLabel="Department Head"
+                                    itemName={`${emp.head?.last_name}, ${emp.head?.first_name}`}
+                                    note="Deleting this record may affect department assignment history and related references."
+                                    action={route(
+                                        "departmenthead.destroy",
+                                        emp.id,
+                                    )}
+                                    method="delete"
+                                    confirmText="Yes, Delete"
+                                    processingText="Deleting..."
+                                    danger={true}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}
