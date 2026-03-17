@@ -429,11 +429,17 @@ const LocatorSlipReport = React.forwardRef(
                                     >
                                         <img
                                             src="/img/deped_matatag.jpg"
-                                            style={{ height: "46px" }}
+                                            style={{
+                                                height: "46px",
+                                                position: "relative",
+                                            }}
                                         />
                                         <img
                                             src="/sdo-pic.jpg"
-                                            style={{ height: "46px" }}
+                                            style={{
+                                                height: "46px",
+                                                position: "relative",
+                                            }}
                                         />
                                     </div>
                                 </td>
@@ -478,7 +484,8 @@ const LocatorSlipReport = React.forwardRef(
                                     verticalAlign: "middle",
                                     marginRight: "4px",
                                     display: "inline-block",
-                                    top: "2px", // 👈 push down
+                                    position: "relative",
+                                    top: "8px",
                                 }}
                                 alt=""
                             />
@@ -510,7 +517,8 @@ const LocatorSlipReport = React.forwardRef(
                                     verticalAlign: "middle",
                                     marginRight: "4px",
                                     display: "inline-block",
-                                    top: "2px", // 👈 push downs
+                                    position: "relative",
+                                    top: "8px",
                                 }}
                                 alt=""
                             />
@@ -542,6 +550,8 @@ const LocatorSlipReport = React.forwardRef(
                                     verticalAlign: "middle",
                                     marginRight: "4px",
                                     display: "inline-block",
+                                    position: "relative",
+                                    top: "8px",
                                 }}
                                 alt=""
                             />
