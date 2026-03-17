@@ -50,6 +50,8 @@ const EmployeeManagement = ({
     const [employees, setEmployees] = useState(employeesList || []);
     const [registered, setRegistered] = useState(registeredList || []);
     const [unregistered, setUnregistered] = useState(unregisteredList || []);
+    const [registrationSamples, setRegistrationSamples] = useState([]);
+    const [enrollmentScans, setEnrollmentScans] = useState([]);
 
     const [selectedEmployee, setSelectedEmployee] = useState("");
     const selectedEmployeeRef = useRef(null);
@@ -57,8 +59,11 @@ const EmployeeManagement = ({
     const [scanStatus, setScanStatus] = useState("idle");
     const [scanMessage, setScanMessage] = useState("");
     const [scanning, setScanning] = useState(false);
-    const [eventSource, setEventSource] = useState(null);
 
+    const scanModeRef = useRef(null);
+    const [scanMode, setScanMode] = useState(null);
+    const testOpenRef = useRef(false);
+    <s></s>;
     const [open, setOpen] = useState(false);
 
     const [testEmployee, setTestEmployee] = useState(null);
@@ -66,7 +71,6 @@ const EmployeeManagement = ({
     const [testOpen, setTestOpen] = useState(false);
     const [testMessage, setTestMessage] = useState("Waiting for scan...");
     const [testStatus, setTestStatus] = useState("idle");
-    const [testSource, setTestSource] = useState(null);
 
     const [selectedDepartment, setSelectedDepartment] =
         useState("All Departments");
@@ -85,15 +89,22 @@ const EmployeeManagement = ({
         employeesRef.current = employees;
     }, [employees]);
 
+    useEffect(() => {
+        testOpenRef.current = testOpen;
+    }, [testOpen]);
+
     const [statusFilter, setStatusFilter] = useState("Active");
     const statusOptions = ["Active", "Inactive"];
+
+    useEffect(() => {
+        scanModeRef.current = scanMode;
+    }, [scanMode]);
 
     // Initialize employees from props
     useEffect(() => {
         setEmployees(Array.isArray(employeesList) ? employeesList : []);
     }, [employeesList]);
 
-    // Keep registered / unregistered reactive
     useEffect(() => {
         setRegistered(employees.filter((emp) => emp.available_fingers < 3));
         setUnregistered(employees.filter((emp) => emp.available_fingers === 3));
@@ -133,12 +144,40 @@ const EmployeeManagement = ({
         return () => clearTimeout(timer);
     }, [scanStatus]);
 
-    // Cleanup SSE on unmount
-    useEffect(() => {
-        return () => {
-            if (eventSource) eventSource.close();
-        };
-    }, [eventSource]);
+    const startEnrollment = async () => {
+        if (!selectedEmployeeRef.current) {
+            setScanStatus("error");
+            setScanMessage("❌ Please select an employee first.");
+            return;
+        }
+
+        if (!apiRef.current) {
+            setScanStatus("error");
+            setScanMessage("❌ Fingerprint API not initialized.");
+            return;
+        }
+
+        try {
+            setRegistrationSamples([]);
+            setScanMode("register");
+            setScanning(true);
+            setScanStatus("scanning");
+            setScanMessage(
+                "Scan 1 of 3. Place the SAME finger on the scanner...",
+            );
+
+            await apiRef.current.stopAcquisition().catch(() => {});
+
+            await apiRef.current.startAcquisition(
+                window.Fingerprint.SampleFormat.Intermediate,
+            );
+        } catch (error) {
+            console.error("Failed to start enrollment:", error);
+            setScanStatus("error");
+            setScanMessage("❌ Failed to start fingerprint scanner.");
+            setScanning(false);
+        }
+    };
 
     const cancelScan = async () => {
         try {
@@ -149,13 +188,11 @@ const EmployeeManagement = ({
             console.error("Failed to stop acquisition:", error);
         }
 
-        if (eventSource) {
-            eventSource.close();
-        }
-
+        setRegistrationSamples([]);
         setScanning(false);
         setScanStatus("idle");
         setScanMessage("Scan cancelled");
+        setScanMode(null);
     };
 
     useEffect(() => {
@@ -182,13 +219,17 @@ const EmployeeManagement = ({
         api.onCommunicationFailed = () => {
             console.error("Communication failed");
             setScanStatus("error");
-            setScanMessage("❌ Cannot connect to fingerprint device. Check ADC.");
+            setScanMessage(
+                "❌ Cannot connect to fingerprint device. Check ADC.",
+            );
             setScanning(false);
         };
 
         api.onAcquisitionStarted = () => {
             setScanStatus("scanning");
-            setScanMessage("🔄 Scanner started. Place your finger on the reader...");
+            setScanMessage(
+                "🔄 Scanner started. Place your finger on the reader...",
+            );
         };
 
         api.onAcquisitionStopped = () => {
@@ -205,79 +246,212 @@ const EmployeeManagement = ({
             console.error("Fingerprint error:", event);
             setScanStatus("error");
             setScanMessage(
-                `❌ ${event?.message || "Fingerprint reader error occurred."}`
+                `❌ ${event?.message || "Fingerprint reader error occurred."}`,
             );
             setScanning(false);
         };
 
         api.onSamplesAcquired = async (event) => {
-            try {
-                setScanStatus("scanning");
-                setScanMessage("🔄 Fingerprint captured. Saving template...");
+            console.log("onSamplesAcquired fired");
+            console.log("Current mode:", scanModeRef.current);
+            console.log("Raw sample event:", event);
 
-                const samples = JSON.parse(event.samples);
+            const samples = JSON.parse(event.samples);
+            console.log("Parsed samples:", samples);
 
-                console.log("selectedEmployeeRef.current", selectedEmployeeRef.current);
-                console.log("samples", samples);
+            if (scanModeRef.current === "register") {
+                try {
+                    const newSample = samples[0];
+                    const updated = [...registrationSamples, newSample];
+                    const count = updated.length;
 
-                const response = await axios.post("/fingerprint/register", {
-                    employee_id: selectedEmployeeRef.current,
-                    samples,
-                });
-                console.log("Laravel response:", response.data);
+                    setRegistrationSamples(updated);
 
-                if (response.data.success) {
-                    setScanStatus("success");
+                    console.log(`Registration sample ${count}/3 captured`);
+
+                    if (count < 3) {
+                        setScanStatus("scanning");
+                        setScanMessage(
+                            `✅ Scan ${count} of 3 captured. Place the SAME finger again...`,
+                        );
+                        return;
+                    }
+
+                    setScanStatus("scanning");
                     setScanMessage(
-                        response.data.message || "✅ Fingerprint registered successfully."
+                        "🔄 3 scans captured. Saving fingerprint...",
                     );
-                    setScanning(false);
 
                     await apiRef.current.stopAcquisition();
 
-                    setEmployees((prev) =>
-                        prev.map((e) =>
-                            e.id === selectedEmployeeRef.current
-                                ? {
-                                    ...e,
-                                    available_fingers: Math.max(
-                                        e.available_fingers - 1,
-                                        0
-                                    ),
-                                }
-                                : e
-                        )
-                    );
+                    const response = await axios.post("/fingerprint/register", {
+                        employee_id: selectedEmployeeRef.current,
+                        samples: updated,
+                    });
 
-                    const emp = employeesRef.current.find(
-                        (e) => e.id === selectedEmployeeRef.current
-                    );
+                    console.log("Register response:", response.data);
 
-                    if (emp && emp.available_fingers - 1 <= 0) {
-                        setSelectedEmployee("");
+                    if (response.data.success) {
+                        setScanStatus("success");
+                        setScanMessage(response.data.message);
+                        setScanning(false);
+
+                        setEmployees((prevEmployees) =>
+                            prevEmployees.map((e) =>
+                                e.id === selectedEmployeeRef.current
+                                    ? {
+                                          ...e,
+                                          available_fingers: Math.max(
+                                              e.available_fingers - 1,
+                                              0,
+                                          ),
+                                      }
+                                    : e,
+                            ),
+                        );
+
+                        setRegistrationSamples([]);
+                    } else {
+                        setScanStatus("error");
+                        setScanMessage(
+                            response.data.message ||
+                                "❌ Failed to register fingerprint.",
+                        );
+                        setScanning(false);
+                        setRegistrationSamples([]);
                     }
-                } else {
+                } catch (err) {
+                    console.error("Failed to save fingerprint:", err);
+                    console.error(
+                        "Register error response:",
+                        err.response?.data,
+                    );
+
                     setScanStatus("error");
                     setScanMessage(
-                        response.data.message || "❌ Failed to register fingerprint."
+                        err.response?.data?.message ||
+                            "❌ Unexpected error occurred while saving fingerprint.",
                     );
                     setScanning(false);
-                    await apiRef.current.stopAcquisition();
+                    setRegistrationSamples([]);
+
+                    try {
+                        await apiRef.current.stopAcquisition();
+                    } catch {}
                 }
-            } catch (err) {
-                console.error("Failed to save fingerprint:", err);
-                console.error("Server response:", err.response?.data);
 
-                setScanStatus("error");
-                setScanMessage(
-                    err.response?.data?.message ||
-                        "❌ Unexpected error occurred while saving fingerprint."
-                );
-                setScanning(false);
+                return;
+            }
 
+            if (scanModeRef.current === "test") {
                 try {
+                    setTestStatus("scanning");
+                    setTestMessage("🔄 Fingerprint captured. Matching...");
+
+                    const response = await axios.post("/fingerprint/test", {
+                        samples,
+                    });
+
+                    const data = response.data;
+                    console.log("Test response:", data);
+
+                    if (data.success && data.employee) {
+                        console.log(
+                            "MATCHED EMPLOYEE:",
+                            `${data.employee.first_name} ${data.employee.middle_name ?? ""} ${data.employee.last_name}`,
+                        );
+                        console.log("Department:", data.employee.department);
+                        console.log("Position:", data.employee.position);
+
+                        const {
+                            first_name,
+                            middle_name,
+                            last_name,
+                            position,
+                            department,
+                        } = data.employee;
+
+                        setTestEmployee({
+                            first_name,
+                            middle_name,
+                            last_name,
+                            position,
+                            department,
+                        });
+
+                        setTestStatus("success");
+                        setTestMessage(
+                            `✅ Match: ${first_name} ${last_name} (${department} - ${position})`,
+                        );
+                    } else {
+                        console.log("No fingerprint match found");
+                        setTestEmployee(null);
+                        setTestStatus("error");
+                        setTestMessage(
+                            data.message || "❌ No matching fingerprint found.",
+                        );
+                    }
+
                     await apiRef.current.stopAcquisition();
-                } catch {}
+
+                    let count = 3;
+                    setTestCountdown(count);
+
+                    const interval = setInterval(() => {
+                        count -= 1;
+                        setTestCountdown(count);
+
+                        if (count <= 0) {
+                            clearInterval(interval);
+                            setTestCountdown(null);
+                            setTestEmployee(null);
+                            setTestStatus("scanning");
+                            setTestMessage(
+                                "Place your finger on the scanner...",
+                            );
+
+                            if (testOpenRef.current) {
+                                startTestFingerprint();
+                            }
+                        }
+                    }, 1000);
+                } catch (err) {
+                    console.error("Test fingerprint failed:", err);
+                    console.error("Test error response:", err.response?.data);
+
+                    setTestEmployee(null);
+                    setTestStatus("error");
+                    setTestMessage(
+                        err.response?.data?.message ||
+                            "❌ Test fingerprint failed.",
+                    );
+
+                    try {
+                        await apiRef.current.stopAcquisition();
+                    } catch {}
+
+                    let count = 3;
+                    setTestCountdown(count);
+
+                    const interval = setInterval(() => {
+                        count -= 1;
+                        setTestCountdown(count);
+
+                        if (count <= 0) {
+                            clearInterval(interval);
+                            setTestCountdown(null);
+                            setTestEmployee(null);
+                            setTestStatus("scanning");
+                            setTestMessage(
+                                "Place your finger on the scanner...",
+                            );
+
+                            if (testOpenRef.current) {
+                                startTestFingerprint();
+                            }
+                        }
+                    }, 1000);
+                }
             }
         };
 
@@ -298,12 +472,16 @@ const EmployeeManagement = ({
         }
 
         try {
+            setScanMode("register");
+            setRegistrationSamples([]);
             setScanning(true);
             setScanStatus("scanning");
-            setScanMessage("🔄 Starting fingerprint registration...");
+            setScanMessage(
+                "🔄 Scan 1 of 3. Place the same finger on the scanner...",
+            );
 
             await apiRef.current.startAcquisition(
-                window.Fingerprint.SampleFormat.Intermediate
+                window.Fingerprint.SampleFormat.Intermediate,
             );
         } catch (error) {
             console.error("Failed to start acquisition:", error);
@@ -313,179 +491,51 @@ const EmployeeManagement = ({
         }
     };
 
-    const cancelFingerprintRegistration = async () => {
+    const cancelTestFingerprint = async () => {
         try {
             if (apiRef.current) {
                 await apiRef.current.stopAcquisition();
             }
         } catch (error) {
-            console.error("Failed to stop acquisition:", error);
+            console.error("Failed to stop test acquisition:", error);
         }
 
-        setScanning(false);
-        setScanStatus("idle");
-        setScanMessage("Fingerprint scanning cancelled.");
+        setScanMode(null);
+        setTestEmployee(null);
+        setTestCountdown(null);
+        setTestStatus("idle");
+        setTestMessage("Waiting for scan...");
     };
 
-
-    // const registerFingerprint = () => {
-    //     if (!selectedEmployee) return;
-
-    //     setScanning(true);
-    //     setScanStatus("scanning");
-    //     setScanMessage("🔄 Starting fingerprint registration...");
-
-    //     const source = new EventSource(
-    //         `http://127.0.0.1:5000/bioRegisterSSE/${selectedEmployee}`
-    //     );
-    //     setEventSource(source);
-
-    //     source.onmessage = (event) => {
-    //         try {
-    //             const data = JSON.parse(event.data);
-    //             if (!data || Object.keys(data).length === 0) return;
-
-    //             if (data.success === null) {
-    //                 // Still scanning
-    //                 setScanStatus("scanning");
-    //                 setScanMessage(data.message);
-    //             } else if (data.success === true) {
-    //                 // Scan success
-    //                 setScanStatus("success");
-    //                 setScanMessage(data.message);
-    //                 setScanning(false);
-    //                 source.close();
-
-    //                 setEmployees((prev) =>
-    //                     prev.map((e) =>
-    //                         e.id === selectedEmployee
-    //                             ? {
-    //                                   ...e,
-    //                                   available_fingers: Math.max(
-    //                                       e.available_fingers - 1,
-    //                                       0
-    //                                   ),
-    //                               }
-    //                             : e
-    //                     )
-    //                 );
-    //                 const emp = employees.find(
-    //                     (e) => e.id === selectedEmployee
-    //                 );
-    //                 if (emp && emp.available_fingers - 1 <= 0) {
-    //                     setSelectedEmployee("");
-    //                 }
-    //             } else if (data.success === false) {
-    //                 setScanStatus("error");
-    //                 setScanMessage(data.message);
-    //                 setScanning(false);
-    //                 source.close();
-    //             }
-    //         } catch (err) {
-    //             console.error("Failed to parse SSE data:", err);
-    //             setScanStatus("error");
-    //             setScanMessage("❌ Unexpected error occurred.");
-    //             setScanning(false);
-    //             source.close();
-    //         }
-    //     };
-
-    //     source.onerror = (err) => {
-    //         console.error("SSE connection error:", err);
-    //         setScanStatus("error");
-    //         setScanMessage("❌ Could not reach fingerprint service.");
-    //         setScanning(false);
-    //         source.close();
-    //     };
-    // };
-
-    const startTestFingerprint = () => {
-        if (testSource) {
-            testSource.close();
+    const startTestFingerprint = async () => {
+        if (!apiRef.current) {
+            setTestStatus("error");
+            setTestMessage("❌ Fingerprint API not initialized.");
+            return;
         }
 
-        setTestMessage("Place your finger on the scanner...");
-        setTestStatus("scanning"); // optional state to show animation/status
-
-        const source = new EventSource(`http://127.0.0.1:5000/bioTestSSE`);
-        setTestSource(source);
-
-        source.onmessage = (event) => {
+        try {
             try {
-                const data = JSON.parse(event.data);
+                await apiRef.current.stopAcquisition();
+            } catch {}
 
-                // 🔹 Ignore heartbeat events
-                if (!data || Object.keys(data).length === 0) return;
+            console.log("Starting test acquisition...");
+            setScanMode("test");
+            setTestEmployee(null);
+            setTestCountdown(null);
+            setTestStatus("scanning");
+            setTestMessage("Place your finger on the scanner...");
 
-                if (data.success && data.employee) {
-                    const {
-                        first_name,
-                        middle_name,
-                        last_name,
-                        position,
-                        department,
-                    } = data.employee;
+            await apiRef.current.startAcquisition(
+                window.Fingerprint.SampleFormat.Intermediate,
+            );
 
-                    setTestEmployee({
-                        first_name,
-                        middle_name,
-                        last_name,
-                        position,
-                        department,
-                    });
-
-                    setTestStatus("success");
-                    setTestMessage(
-                        `✅ Match: ${first_name} ${last_name} (${department} - ${position})`
-                    );
-
-                    // countdown to reset UI
-                    let count = 3;
-                    setTestCountdown(count);
-                    const interval = setInterval(() => {
-                        count -= 1;
-                        setTestCountdown(count);
-                        if (count <= 0) {
-                            clearInterval(interval);
-                            setTestCountdown(null);
-                            setTestStatus("scanning");
-                            setTestMessage(
-                                "Place your finger on the scanner..."
-                            );
-                        }
-                    }, 1000);
-                } else if (data.message) {
-                    setTestStatus("error");
-                    setTestMessage(`❌ ${data.message}`);
-
-                    // optional retry countdown
-                    let count = 3;
-                    const interval = setInterval(() => {
-                        count -= 1;
-                        if (count <= 0) {
-                            clearInterval(interval);
-                            setTestStatus("scanning");
-                            setTestMessage(
-                                "Place your finger on the scanner..."
-                            );
-                        }
-                    }, 1000);
-                }
-            } catch (err) {
-                console.error("SSE parse error:", err);
-                setTestStatus("error");
-                setTestMessage("❌ Test error.");
-            }
-        };
-
-        source.onerror = (err) => {
-            console.error("SSE error:", err);
+            console.log("Test acquisition started");
+        } catch (error) {
+            console.error("Failed to start test acquisition:", error);
             setTestStatus("error");
-            setTestMessage("❌ Lost connection to fingerprint service.");
-            source.close();
-
-            setTimeout(() => startTestFingerprint(), 3000);
-        };
+            setTestMessage("❌ Failed to start fingerprint scanner.");
+        }
     };
 
     const fingerOptions = [
@@ -555,8 +605,8 @@ const EmployeeManagement = ({
             statusFilter === "All Status"
                 ? true
                 : statusFilter === "Active"
-                ? emp.active_status === "Active" || emp.active_status === 1
-                : emp.active_status === "Inactive" || emp.active_status === 0;
+                  ? emp.active_status === "Active" || emp.active_status === 1
+                  : emp.active_status === "Inactive" || emp.active_status === 0;
 
         return matchesSearch && matchesDepartment && matchesStatus;
     });
@@ -583,7 +633,8 @@ const EmployeeManagement = ({
                                         className="justify-between"
                                     >
                                         {employees.find(
-                                            (emp) => emp.id === selectedEmployee
+                                            (emp) =>
+                                                emp.id === selectedEmployee,
                                         )?.full_name || "-- Choose Employee --"}
                                     </Button>
                                 </PopoverTrigger>
@@ -599,26 +650,26 @@ const EmployeeManagement = ({
                                                     .filter(
                                                         (emp) =>
                                                             availableFingers(
-                                                                emp.id
-                                                            ) > 0
+                                                                emp.id,
+                                                            ) > 0,
                                                     )
                                                     .map((emp) => (
                                                         <CommandItem
                                                             key={emp.id}
                                                             onSelect={() => {
                                                                 setSelectedEmployee(
-                                                                    emp.id
+                                                                    emp.id,
                                                                 );
                                                                 setOpen(false);
                                                             }}
                                                         >
                                                             {emp.full_name} (
                                                             {availableFingers(
-                                                                emp.id
+                                                                emp.id,
                                                             )}{" "}
                                                             finger
                                                             {availableFingers(
-                                                                emp.id
+                                                                emp.id,
                                                             ) !== 1
                                                                 ? "s"
                                                                 : ""}{" "}
@@ -640,27 +691,27 @@ const EmployeeManagement = ({
                                         scanStatus === "error"
                                             ? "text-red-500"
                                             : scanStatus === "success"
-                                            ? "text-green-500"
-                                            : "text-blue-500"
+                                              ? "text-green-500"
+                                              : "text-blue-500"
                                     }`}
                                 >
                                     {scanStatus === "error"
                                         ? scanMessage
                                         : scanStatus === "success"
-                                        ? scanMessage
-                                        : scanning
-                                        ? scanMessage
-                                        : selectedEmployee
-                                        ? `${availableFingers(
-                                              selectedEmployee
-                                          )} Available Fingerprint${
-                                              availableFingers(
-                                                  selectedEmployee
-                                              ) !== 1
-                                                  ? "s"
-                                                  : ""
-                                          } Registration`
-                                        : ""}
+                                          ? scanMessage
+                                          : scanning
+                                            ? scanMessage
+                                            : selectedEmployee
+                                              ? `${availableFingers(
+                                                    selectedEmployee,
+                                                )} Available Fingerprint${
+                                                    availableFingers(
+                                                        selectedEmployee,
+                                                    ) !== 1
+                                                        ? "s"
+                                                        : ""
+                                                } Registration`
+                                              : ""}
                                 </p>
                             </div>
 
@@ -673,12 +724,15 @@ const EmployeeManagement = ({
                                             setScanning(false);
                                             setScanStatus("idle");
                                             setScanMessage(
-                                                "Place your fingerprint"
+                                                "Place your fingerprint",
                                             );
                                             setSelectedEmployee("");
-                                        } else if (scanStatus === "error")
-                                            registerFingerprint();
-                                        else registerFingerprint();
+                                            setRegistrationSamples([]);
+                                        } else if (scanStatus === "error") {
+                                            startEnrollment();
+                                        } else {
+                                            startEnrollment();
+                                        }
                                     }}
                                     disabled={!selectedEmployee}
                                     className="w-60 mt-1"
@@ -686,25 +740,20 @@ const EmployeeManagement = ({
                                     {scanning
                                         ? "Cancel"
                                         : scanStatus === "success"
-                                        ? "Register Another"
-                                        : scanStatus === "error"
-                                        ? "Retry"
-                                        : "Register Fingerprint"}
+                                          ? "Register Another"
+                                          : scanStatus === "error"
+                                            ? "Retry"
+                                            : "Register Fingerprint"}
                                 </Button>
                                 <AlertDialog
                                     open={testOpen}
                                     onOpenChange={(open) => {
                                         setTestOpen(open);
+
                                         if (open) {
-                                            // Start the continuous fingerprint test scan when dialog opens
                                             startTestFingerprint();
                                         } else {
-                                            // Clean up SSE and reset UI when dialog closes
-                                            if (testSource) testSource.close();
-                                            setTestMessage(
-                                                "Waiting for scan..."
-                                            );
-                                            setTestStatus("idle"); // optional, if you track status
+                                            cancelTestFingerprint();
                                         }
                                     }}
                                 >
@@ -716,7 +765,6 @@ const EmployeeManagement = ({
                                             Test Fingerprint
                                         </Button>
                                     </AlertDialogTrigger>
-
                                     <AlertDialogContent>
                                         <AlertDialogHeader>
                                             <AlertDialogTitle>
@@ -729,32 +777,74 @@ const EmployeeManagement = ({
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
 
-                                        <div className="flex flex-col items-center py-4">
+                                        <div className="flex flex-col items-center py-4 w-full">
                                             <Fingerprint
                                                 className={`w-20 h-20 ${
                                                     testStatus === "scanning"
                                                         ? "text-blue-500 animate-pulse"
                                                         : testStatus ===
-                                                          "success"
-                                                        ? "text-green-500 animate-bounce"
-                                                        : "text-red-500"
+                                                            "success"
+                                                          ? "text-green-500 animate-bounce"
+                                                          : testStatus ===
+                                                              "error"
+                                                            ? "text-red-500"
+                                                            : "text-gray-400"
                                                 }`}
                                             />
-                                            <p className="mt-3 text-sm text-gray-700">
+
+                                            <p className="mt-3 text-sm text-gray-700 text-center">
                                                 {testMessage}
                                             </p>
+
+                                            {testCountdown !== null && (
+                                                <p className="mt-1 text-xs text-gray-500">
+                                                    Resetting in {testCountdown}
+                                                    ...
+                                                </p>
+                                            )}
+
+                                            {testEmployee && (
+                                                <div className="mt-4 w-full rounded-xl border border-green-200 bg-green-50 p-4 text-left">
+                                                    <p className="font-bold text-green-700 mb-2">
+                                                        Registered Employee
+                                                        Found
+                                                    </p>
+
+                                                    <p className="text-sm text-gray-700">
+                                                        <span className="font-semibold">
+                                                            Name:
+                                                        </span>{" "}
+                                                        {
+                                                            testEmployee.first_name
+                                                        }{" "}
+                                                        {testEmployee.middle_name
+                                                            ? `${testEmployee.middle_name} `
+                                                            : ""}
+                                                        {testEmployee.last_name}
+                                                    </p>
+
+                                                    <p className="text-sm text-gray-700">
+                                                        <span className="font-semibold">
+                                                            Department:
+                                                        </span>{" "}
+                                                        {
+                                                            testEmployee.department
+                                                        }
+                                                    </p>
+
+                                                    <p className="text-sm text-gray-700">
+                                                        <span className="font-semibold">
+                                                            Position:
+                                                        </span>{" "}
+                                                        {testEmployee.position}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
 
                                         <AlertDialogFooter>
                                             <AlertDialogCancel
-                                                onClick={() => {
-                                                    if (testSource)
-                                                        testSource.close();
-                                                    setTestMessage(
-                                                        "Waiting for scan..."
-                                                    );
-                                                    setTestStatus("idle"); // optional reset
-                                                }}
+                                                onClick={cancelTestFingerprint}
                                             >
                                                 Close
                                             </AlertDialogCancel>

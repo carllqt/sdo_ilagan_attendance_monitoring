@@ -43,9 +43,11 @@ Route::get('/', function () {
 
 Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance');
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-Route::get('/fingerprint-test', [FingerprintController::class, 'test']);
 Route::post('/fingerprint/register', [FingerprintController::class, 'register'])
     ->name('fingerprint.register');
+
+Route::post('/fingerprint/test', [FingerprintController::class, 'test'])
+    ->name('fingerprint.test');
 
 /*
 |--------------------------------------------------------------------------
