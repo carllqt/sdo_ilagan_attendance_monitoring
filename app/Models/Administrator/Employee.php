@@ -2,6 +2,7 @@
 
 namespace App\Models\Administrator;
 
+use App\Models\DepartmentHead;
 use App\Models\School;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -69,5 +70,8 @@ class Employee extends Model
     }
     public function school(){
         return $this->belongsTo(School::class);
+    }
+    public function head(){
+        return $this->belongsTo(DepartmentHead::class);
     }
 }

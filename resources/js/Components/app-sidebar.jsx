@@ -14,10 +14,14 @@ import {
     UserCog,
     LogOut,
     User,
+<<<<<<< HEAD
     Briefcase,
     FileText,
     Plane,
     MapPinned,
+=======
+    FileUser,
+>>>>>>> upstream/main
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -124,6 +128,33 @@ export function AppSidebar({ active, user, ...props }) {
                                                     }`}
                                                 />
                                                 Employee Management
+                                            </Link>
+                                        </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
+
+                                    <SidebarMenuSubItem>
+                                        <SidebarMenuSubButton
+                                            asChild
+                                            isActive={
+                                                active ===
+                                                "departmenthead.index"
+                                            }
+                                        >
+                                            <Link
+                                                href={route(
+                                                    "departmenthead.index",
+                                                )}
+                                                className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                            >
+                                                <FileUser
+                                                    className={`h-4 w-4 ${
+                                                        active ===
+                                                        "departmenthead.index"
+                                                            ? "!text-black"
+                                                            : "!text-white"
+                                                    }`}
+                                                />
+                                                Department Heads
                                             </Link>
                                         </SidebarMenuSubButton>
                                     </SidebarMenuSubItem>

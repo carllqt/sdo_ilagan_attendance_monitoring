@@ -14,10 +14,11 @@ class DepartmentHead extends Model
     protected $fillable = [
         'department',
         'employee_id',
+        'status'
     ];
 
     public function head()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
 }
