@@ -44,11 +44,14 @@ Route::get('/', function () {
 
 Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance');
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-Route::post('/fingerprint/register', [FingerprintController::class, 'register'])
+Route::get('/fingerprint/register', [FingerprintController::class, 'register'])
     ->name('fingerprint.register');
 
-Route::post('/fingerprint/test', [FingerprintController::class, 'test'])
-    ->name('fingerprint.test');
+Route::get('/fingerprint/test', function () {
+    return Inertia::render('FingerprintTest');
+})->name('fingerprint.test.page');
+Route::post('/fingerprint/test-three', [FingerprintController::class, 'testThree'])
+    ->name('fingerprint.testThree');
 
 /*
 |--------------------------------------------------------------------------
@@ -136,8 +139,22 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/travel-order', function () {
         return Inertia::render('Employee/TravelOrder');
     })->name('travelorder');
-});
 
+    Route::get('/locator-slip', function () {
+        return Inertia::render('Employee/LocatorSlip/LocatorSlip');
+    })->name('locatorslip');
+
+    // Show the locator slip page
+    Route::get('employee/locator-slip', [LocatorSlipController::class, 'index'])
+        ->name('locator-slips.index');
+
+    // Store a new locator slip
+    Route::post('employee/locator-slip', [LocatorSlipController::class, 'store'])
+        ->name('locator-slips.store');
+
+    // Generate PDF for a locator slip
+    Route::get('/employee/locator-slip/pdf/{id}', [LocatorSlipController::class, 'generatePDF']);
+});
 
 
 
