@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DepartmentHead;
 use App\Models\User;
 use App\Models\Administrator\Employee;
 use Illuminate\Database\Seeder;
@@ -22,7 +23,8 @@ class DatabaseSeeder extends Seeder
         $this->call(Convertion::class);
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
-        $employee = Employee::create([
+        $staff = Role::firstOrCreate(['name' => 'staff']);
+        $employee1 = Employee::create([
             'first_name' => 'Reycarl',
             'middle_name' => 'Dela Cruz',
             'last_name' => 'Medico',
@@ -30,11 +32,17 @@ class DatabaseSeeder extends Seeder
             'department' => 'ADMINISTRATIVE UNIT',
             'work_type' => 'Full',
         ]);
+        $user1 = User::create([
+            'name' => 'Staff',
+            'email' => 'staff@gmail.com',
+            'password' => Hash::make('123'),
+            'employee_id' => $employee1->id,
+        ]);
+        $user1->assignRole($staff);
+        Employee::factory(5)->create();
 
 
-
-
-        $employee = Employee::create([
+        $employee2 = Employee::create([
             'first_name' => 'Xedric',
             'middle_name' => 'Baingan',
             'last_name' => 'Alejo',
@@ -42,15 +50,20 @@ class DatabaseSeeder extends Seeder
             'department' => 'ICT',
             'work_type' => 'Full',
         ]);
-
-        $user = User::create([
+        $user2 = User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123'),
-            'employee_id' => $employee->id,
+            'employee_id' => $employee2->id,
         ]);
-        $user->assignRole($admin);
+        $user2->assignRole($admin);
         Employee::factory(5)->create();
+
+        DepartmentHead::create([
+            'department' => 'ict_unit',
+            'employee_id' => $employee2->id,
+            'status' => 'active',
+        ]);
 
         $this->call([
             MonthlySeeder::class,
