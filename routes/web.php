@@ -102,8 +102,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/departmentheads', [DepartmentHeadController::class, 'index'])->name('departmenthead.index');
     Route::post('/departmentheads/store', [DepartmentHeadController::class, 'store'])->name('departmenthead.store');
     Route::patch('/department-head/{departmentHead}/toggle-status', [DepartmentHeadController::class, 'toggleStatus'])
-    ->name('departmenthead.toggle-status');
+        ->name('departmenthead.toggle-status');
     Route::delete('/departmentheads/delete/{id}', [DepartmentHeadController::class, 'destroy'])->name('departmenthead.destroy');
+
+    //Locator SLips
+    Route::prefix('employee')->group(function () {
+        // Show locator slip page
+        Route::get('/locator-slip', [LocatorSlipController::class, 'index'])
+            ->name('locator-slips.index');
+
+        // Store new locator slip
+        Route::post('/locator-slip', [LocatorSlipController::class, 'store'])
+            ->name('locator-slips.store');
+    });
+
 
 
     // Profile
@@ -111,35 +123,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    
+
 
     Route::get('/services', function () {
-    return Inertia::render('Services');
+        return Inertia::render('Services');
     })->name('services');
 
     Route::get('/print-dtr', function () {
-    return Inertia::render('Employee/PrintDTR');
+        return Inertia::render('Employee/PrintDTR');
     })->name('printdtr');
 
     Route::get('/travel-order', function () {
         return Inertia::render('Employee/TravelOrder');
     })->name('travelorder');
-
-    Route::get('/locator-slip', function () {
-        return Inertia::render('Employee/LocatorSlip/LocatorSlip');
-    })->name('locatorslip');
-    
-    // Show the locator slip page
-    Route::get('employee/locator-slip', [LocatorSlipController::class, 'index'])
-        ->name('locator-slips.index');
-
-    // Store a new locator slip
-    Route::post('employee/locator-slip', [LocatorSlipController::class, 'store'])
-        ->name('locator-slips.store');
-
-    // Generate PDF for a locator slip
-    Route::get('/employee/locator-slip/pdf/{id}', [LocatorSlipController::class, 'generatePDF']);
 });
+
 
 
 

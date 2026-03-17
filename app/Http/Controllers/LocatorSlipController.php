@@ -6,74 +6,52 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Administrator\Employee;
 use App\Models\LocatorSlip;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class LocatorSlipController extends Controller
 {
     public function index()
     {
-        $locator_slips = LocatorSlip::with('employee')->get();
-        $employees = Employee::all();
+        $employee = Employee::first(); // replace with logged-in employee later
 
-        return Inertia::render('Employee/LocatorSlip/LocatorSlip', [
+        $locator_slips = LocatorSlip::with('employee')
+            ->latest()
+            ->get();
+
+        return Inertia::render('Employee/LocatorSlip/LocatorSlipPage', [
             'locator_slips' => $locator_slips,
-            'employees' => $employees,
+            'employee' => $employee,
             'success_message' => session('success_message'),
+            'error_message' => session('error_message'),
         ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'purpose_of_travel' => 'required|string|max:255',
             'destination' => 'required|string|max:255',
             'check_type' => 'required|string|in:Official Business,Official Time',
             'date_time' => 'required|date',
         ]);
 
-        $employee = Employee::first(); // Sample employee for testing
+        $employee = Employee::first(); // replace with logged-in employee later
 
         if (!$employee) {
-            return Inertia::render('Employee/LocatorSlip/LocatorSlip', [
-                'locator_slips' => LocatorSlip::with('employee')->get(),
-                'employees' => Employee::all(),
-                'error_message' => 'No employee found in the system.'
-            ]);
+            return redirect()
+                ->route('locator-slips.index')
+                ->with('error_message', 'No employee found in the system.');
         }
 
         LocatorSlip::create([
             'employee_id' => $employee->id,
-            'purpose_of_travel' => $request->purpose_of_travel,
-            'destination' => $request->destination,
-            'check_type' => $request->check_type,
-            'date_time' => $request->date_time,
+            'purpose_of_travel' => $validated['purpose_of_travel'],
+            'destination' => $validated['destination'],
+            'check_type' => $validated['check_type'],
+            'date_time' => $validated['date_time'],
         ]);
 
-        return redirect()->route('locator-slips.index')
+        return redirect()
+            ->route('locator-slips.index')
             ->with('success_message', 'Locator Slip created successfully.');
-    }
-
-    public function generatePDF($id)
-    {
-        $slip = LocatorSlip::with('employee')->findOrFail($id);
-
-        $data = [
-            'name' => $slip->employee->full_name,
-            'position' => $slip->employee->position,
-            'station' => $slip->employee->station,
-            'purpose' => $slip->purpose_of_travel,
-            'destination' => $slip->destination,
-            'date_time' => date('F d, Y / h:i A', strtotime($slip->date_time)),
-            'check_type' => $slip->check_type,
-        ];
-
-        $pdf = Pdf::loadView('pdf.locator-slip', $data)
-    ->setPaper('A4', 'portrait');
-
-    $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
-    $pdf->getDomPDF()->set_option('isHtml5ParserEnabled', true);
-    $pdf->getDomPDF()->set_option('defaultFont', 'serif');
-
-    return $pdf->stream();
     }
 }
