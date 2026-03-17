@@ -7383,3 +7383,9 @@ ttendance_monitoring\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\P
 #67 C:\\Users\\Teacher\\sdo_ilagan_attendance_monitoring\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\Users\\\\Teache...')
 #68 {main}
 "} 
+[2026-03-17 10:12:52] local.INFO: Fingerprint test incoming {"sample_preview":"{\"Data\":\"AOhIAcgp43NcwEE381mKK8hcZ2ZCdghtsota7v4kz189RZVkPJWLwx_e-HBVWFFguklmvFBWheeyXP4h4DH115FXNEfvuivMI58TJNc8IaOJWWmVyPGo-kqEyMNKXD53GRn5oITw4Y-_S","sample_length":579} 
+[2026-03-17 10:12:52] local.INFO: Comparing fingerprint {"biometric_id":1,"employee_id":4,"stored_preview":"{\"Data\":\"AOhJAcgp43NcwEE381mKa9BcZ2amAFN9PFR7edu31aBGhkCAKwmVQpHjnnmT38g6QMOVG8haxXk3M86-KwxxyeIdYduIRerRjRy8g4878TiuO4BuisUaKY20aElui_Wl3VGx4gWLInyfx","stored_length":581,"is_equal":false} 
+[2026-03-17 10:12:52] local.INFO: Comparing fingerprint {"biometric_id":2,"employee_id":1,"stored_preview":"{\"Data\":\"AOhIAcgp43NcwEE381mKqyhdZ2ZkSx4HUO3yO5eSGYzoyoOQFCCfueryQLEbGSzjKnp1SvydAjeKoViVrGzF3PpCoDLRwpGAMsX3IbvAys_weMYGeu5gI2ZNwwElc-ouWK6PJ_9I47bt-","stored_length":579,"is_equal":false} 
+[2026-03-17 10:12:52] local.INFO: Comparing fingerprint {"biometric_id":3,"employee_id":4,"stored_preview":"{\"Data\":\"AOg5Acgp43NcwEE381mK6yZdZ2b-s42hFrr_mRHKoh1kGOkPDiAPMQstJ2iz1t9rC_zpK8uRvlhxa0Rp52M46IE7fZJMIKQErzSG9tbh87EMsnkAaPHbqW4jUndw5q72I9whGHMQJSf0G","stored_length":559,"is_equal":false} 
+[2026-03-17 10:12:52] local.INFO: Comparing fingerprint {"biometric_id":4,"employee_id":3,"stored_preview":"{\"captures\":[\"{\\\"Data\\\":\\\"AOhKAcgp43NcwEE381mK6yddZ2bBPIhjBSTc3QVrE3LyWgyXoXCx2k802ZBRE9MdQ8Ph9Wqo7MSOYzu95iYhCl4wlYevh3_U01s_tH87OOXA7wbZ-fNHNwOuoAHv","stored_length":1843,"is_equal":false} 
+[2026-03-17 10:12:52] local.WARNING: No fingerprint match found  
