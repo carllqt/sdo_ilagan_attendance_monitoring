@@ -417,24 +417,20 @@ export function AppSidebar({ active, user, ...props }) {
                                                 <SidebarMenuSubItem>
                                                     <SidebarMenuSubButton
                                                         asChild
-                                                        isActive={
-                                                            active ===
-                                                            "locatorslip"
-                                                        }
+                                                        isActive={active}
                                                     >
                                                         <Link
                                                             href={route(
-                                                                "locatorslip",
-                                                            )}
-                                                            className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                                                "locator-slips.index",
+                                                            )} // <-- use correct route name
+                                                            className={`flex items-center gap-2 text-xs p-2 rounded ${
+                                                                active
+                                                                    ? "bg-blue-100 text-black"
+                                                                    : "text-white hover:bg-blue-900 hover:text-blue-100"
+                                                            }`}
                                                         >
                                                             <MapPinned
-                                                                className={`h-4 w-4 ${
-                                                                    active ===
-                                                                    "locatorslip"
-                                                                        ? "!text-black"
-                                                                        : "!text-white"
-                                                                }`}
+                                                                className={`h-4 w-4 ${active ? "!text-black" : "!text-white"}`}
                                                             />
                                                             Locator Slip
                                                         </Link>

@@ -22,7 +22,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Http\Controllers\LocatorSlipController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -101,6 +101,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    
+
     Route::get('/services', function () {
     return Inertia::render('Services');
     })->name('services');
@@ -114,8 +116,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('travelorder');
 
     Route::get('/locator-slip', function () {
-        return Inertia::render('Employee/LocatorSlip');
+        return Inertia::render('Employee/LocatorSlip/LocatorSlip');
     })->name('locatorslip');
+    
+    // Show the locator slip page
+    Route::get('employee/locator-slip', [LocatorSlipController::class, 'index'])
+        ->name('locator-slips.index');
+
+    // Store a new locator slip
+    Route::post('employee/locator-slip', [LocatorSlipController::class, 'store'])
+        ->name('locator-slips.store');
+
+    // Generate PDF for a locator slip
+    Route::get('/employee/locator-slip/pdf/{id}', [LocatorSlipController::class, 'generatePDF']);
 });
 
 
