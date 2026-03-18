@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\LocatorSlipController;
+use App\Http\Controllers\TravelOrderController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -137,8 +138,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     })->name('printdtr');
 
     Route::get('/travel-order', function () {
-        return Inertia::render('Employee/TravelOrder');
+        return Inertia::render('Employee/TravelOrder/TravelOrderPage');
     })->name('travelorder');
+    Route::post('/employee/travel-order', [TravelOrderController::class, 'store']);
+    Route::get('/travel-order', [TravelOrderController::class, 'index'])
+    ->name('travelorder');
 
     Route::get('/locator-slip', function () {
         return Inertia::render('Employee/LocatorSlip/LocatorSlip');

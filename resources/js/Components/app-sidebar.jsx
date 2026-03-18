@@ -348,6 +348,7 @@ export function AppSidebar({ active, user, ...props }) {
                         </SidebarMenuItem>
 
                         {/* Employee */}
+                        {/* Employee */}
                         <SidebarMenuItem>
                             <Button
                                 variant="ghost"
@@ -367,155 +368,82 @@ export function AppSidebar({ active, user, ...props }) {
 
                             {isEmployeeOpen && (
                                 <SidebarMenuSub>
+                                    {/* Print DTR */}
                                     <SidebarMenuSubItem>
-                                        <Button
-                                            variant="ghost"
-                                            className="w-full justify-between px-3 py-2 text-left text-xs text-white hover:bg-blue-900 hover:text-blue-100"
-                                            onClick={() =>
-                                                setServicesOpen(!isServicesOpen)
-                                            }
+                                        <SidebarMenuSubButton
+                                            asChild
+                                            isActive={active === "printdtr"}
                                         >
-                                            <span className="flex items-center gap-2">
-                                                <Briefcase className="h-4 w-4" />
-                                                Services
-                                            </span>
-                                            {isServicesOpen ? (
-                                                <ChevronDown className="h-4 w-4" />
-                                            ) : (
-                                                <ChevronRight className="h-4 w-4" />
-                                            )}
-                                        </Button>
+                                            <Link
+                                                href={route("printdtr")}
+                                                className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                            >
+                                                <FileText
+                                                    className={`h-4 w-4 ${
+                                                        active === "printdtr"
+                                                            ? "!text-black"
+                                                            : "!text-white"
+                                                    }`}
+                                                />
+                                                Print DTR
+                                            </Link>
+                                        </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
 
-                                        {isServicesOpen && (
-                                            <SidebarMenuSub>
-                                                <SidebarMenuSubItem>
-                                                    <SidebarMenuSubButton
-                                                        asChild
-                                                        isActive={
-                                                            active ===
-                                                            "printdtr"
-                                                        }
-                                                    >
-                                                        <Link
-                                                            href={route(
-                                                                "printdtr",
-                                                            )}
-                                                            className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
-                                                        >
-                                                            <FileText
-                                                                className={`h-4 w-4 ${
-                                                                    active ===
-                                                                    "printdtr"
-                                                                        ? "!text-black"
-                                                                        : "!text-white"
-                                                                }`}
-                                                            />
-                                                            Print DTR
-                                                        </Link>
-                                                    </SidebarMenuSubButton>
-                                                </SidebarMenuSubItem>
+                                    {/* Travel Order */}
+                                    <SidebarMenuSubItem>
+                                        <SidebarMenuSubButton
+                                            asChild
+                                            isActive={active === "travelorder"}
+                                        >
+                                            <Link
+                                                href={route("travelorder")}
+                                                className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                            >
+                                                <Plane
+                                                    className={`h-4 w-4 ${
+                                                        active === "travelorder"
+                                                            ? "!text-black"
+                                                            : "!text-white"
+                                                    }`}
+                                                />
+                                                Travel Order
+                                            </Link>
+                                        </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
 
-                                                <SidebarMenuSubItem>
-                                                    <SidebarMenuSubButton
-                                                        asChild
-                                                        isActive={
-                                                            active ===
-                                                            "travelorder"
-                                                        }
-                                                    >
-                                                        <Link
-                                                            href={route(
-                                                                "travelorder",
-                                                            )}
-                                                            className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
-                                                        >
-                                                            <Plane
-                                                                className={`h-4 w-4 ${
-                                                                    active ===
-                                                                    "travelorder"
-                                                                        ? "!text-black"
-                                                                        : "!text-white"
-                                                                }`}
-                                                            />
-                                                            Travel Order
-                                                        </Link>
-                                                    </SidebarMenuSubButton>
-                                                </SidebarMenuSubItem>
-
-                                                <SidebarMenuSubItem>
-                                                    <SidebarMenuSubButton
-                                                        asChild
-                                                        isActive={active}
-                                                    >
-                                                        <Link
-                                                            href={route(
-                                                                "locator-slips.index",
-                                                            )} // <-- use correct route name
-                                                            className={`flex items-center gap-2 text-xs p-2 rounded ${
-                                                                active
-                                                                    ? "bg-blue-100 text-black"
-                                                                    : "text-white hover:bg-blue-900 hover:text-blue-100"
-                                                            }`}
-                                                        >
-                                                            <MapPinned
-                                                                className={`h-4 w-4 ${active ? "!text-black" : "!text-white"}`}
-                                                            />
-                                                            Locator Slip
-                                                        </Link>
-                                                    </SidebarMenuSubButton>
-                                                </SidebarMenuSubItem>
-                                            </SidebarMenuSub>
-                                        )}
+                                    {/* Locator Slip */}
+                                    <SidebarMenuSubItem>
+                                        <SidebarMenuSubButton
+                                            asChild
+                                            isActive={active}
+                                        >
+                                            <Link
+                                                href={route(
+                                                    "locator-slips.index",
+                                                )}
+                                                className={`flex items-center gap-2 text-xs p-2 rounded ${
+                                                    active
+                                                        ? "bg-blue-100 text-black"
+                                                        : "text-white hover:bg-blue-900 hover:text-blue-100"
+                                                }`}
+                                            >
+                                                <MapPinned
+                                                    className={`h-4 w-4 ${
+                                                        active
+                                                            ? "!text-black"
+                                                            : "!text-white"
+                                                    }`}
+                                                />
+                                                Locator Slip
+                                            </Link>
+                                        </SidebarMenuSubButton>
                                     </SidebarMenuSubItem>
                                 </SidebarMenuSub>
                             )}
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarGroup>
-
-                {user && (
-                    <SidebarGroup className="mt-auto">
-                        <SidebarMenu>
-                            <SidebarMenuItem>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button
-                                            variant="ghost"
-                                            className="w-full justify-center items-center gap-2 hover:bg-blue-900 hover:text-blue-100"
-                                        >
-                                            <User className="h-4 w-4" />
-                                            {user.name}
-                                        </Button>
-                                    </DropdownMenuTrigger>
-
-                                    <DropdownMenuContent align="start">
-                                        <DropdownMenuItem asChild>
-                                            <Link
-                                                href={route("profile.edit")}
-                                                className="flex items-center gap-2"
-                                            >
-                                                <User className="h-4 w-4" />
-                                                Profile
-                                            </Link>
-                                        </DropdownMenuItem>
-
-                                        <DropdownMenuItem asChild>
-                                            <Link
-                                                href={route("logout")}
-                                                method="post"
-                                                as="button"
-                                                className="flex items-center gap-2 w-full text-left"
-                                            >
-                                                <LogOut className="h-4 w-4" />
-                                                Log Out
-                                            </Link>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </SidebarGroup>
-                )}
             </SidebarContent>
         </Sidebar>
     );

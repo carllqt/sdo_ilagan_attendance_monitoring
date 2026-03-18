@@ -16,11 +16,12 @@ class LocatorSlip extends Model
         'official_business',
         'official_time',
         'destination',
+        'date_time',
     ];
 
     protected $casts = [
         'official_business' => 'boolean',
-        'official_time' => 'datetime',
+        'official_time' => 'boolean',
     ];
 
     public function employee()
