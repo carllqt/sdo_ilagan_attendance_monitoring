@@ -345,7 +345,6 @@ export function AppSidebar({ active, user, ...props }) {
                         </SidebarMenuItem>
 
                         {/* Employee */}
-                        {/* Employee */}
                         <SidebarMenuItem>
                             <Button
                                 variant="ghost"
@@ -387,57 +386,48 @@ export function AppSidebar({ active, user, ...props }) {
                                         </SidebarMenuSubButton>
                                     </SidebarMenuSubItem>
 
-                                                <SidebarMenuSubItem>
-                                                    <SidebarMenuSubButton
-                                                        asChild
-                                                        isActive={
-                                                            active ===
-                                                            "travelorder"
-                                                        }
-                                                    >
-                                                        <Link
-                                                            href={route(
-                                                                "travelorder",
-                                                            )}
-                                                            className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
-                                                        >
-                                                            <Plane
-                                                                className={`h-4 w-4 ${
-                                                                    active ===
-                                                                    "travelorder"
-                                                                        ? "!text-black"
-                                                                        : "!text-white"
-                                                                }`}
-                                                            />
-                                                            Travel Order
-                                                        </Link>
-                                                    </SidebarMenuSubButton>
-                                                </SidebarMenuSubItem>
+                                    <SidebarMenuSubItem>
+                                        <SidebarMenuSubButton
+                                            asChild
+                                            isActive={active === "travelorder"}
+                                        >
+                                            <Link
+                                                href={route("travelorder")}
+                                                className="flex items-center gap-2 text-xs text-white hover:bg-blue-900 hover:text-blue-100"
+                                            >
+                                                <Plane
+                                                    className={`h-4 w-4 ${
+                                                        active === "travelorder"
+                                                            ? "!text-black"
+                                                            : "!text-white"
+                                                    }`}
+                                                />
+                                                Travel Order
+                                            </Link>
+                                        </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
 
-                                                <SidebarMenuSubItem>
-                                                    <SidebarMenuSubButton
-                                                        asChild
-                                                        isActive={active}
-                                                    >
-                                                        <Link
-                                                            href={route(
-                                                                "locator-slips.index",
-                                                            )} // <-- use correct route name
-                                                            className={`flex items-center gap-2 text-xs p-2 rounded ${
-                                                                active
-                                                                    ? "bg-blue-100 text-black"
-                                                                    : "text-white hover:bg-blue-900 hover:text-blue-100"
-                                                            }`}
-                                                        >
-                                                            <MapPinned
-                                                                className={`h-4 w-4 ${active ? "!text-black" : "!text-white"}`}
-                                                            />
-                                                            Locator Slip
-                                                        </Link>
-                                                    </SidebarMenuSubButton>
-                                                </SidebarMenuSubItem>
-                                            </SidebarMenuSub>
-                                        )}
+                                    <SidebarMenuSubItem>
+                                        <SidebarMenuSubButton
+                                            asChild
+                                            isActive={active}
+                                        >
+                                            <Link
+                                                href={route(
+                                                    "locator-slips.index",
+                                                )} // <-- use correct route name
+                                                className={`flex items-center gap-2 text-xs p-2 rounded ${
+                                                    active
+                                                        ? "bg-blue-100 text-black"
+                                                        : "text-white hover:bg-blue-900 hover:text-blue-100"
+                                                }`}
+                                            >
+                                                <MapPinned
+                                                    className={`h-4 w-4 ${active ? "!text-black" : "!text-white"}`}
+                                                />
+                                                Locator Slip
+                                            </Link>
+                                        </SidebarMenuSubButton>
                                     </SidebarMenuSubItem>
                                 </SidebarMenuSub>
                             )}
