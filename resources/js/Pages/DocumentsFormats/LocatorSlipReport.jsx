@@ -49,10 +49,22 @@ const LocatorSlipReport = React.forwardRef(
                             }}
                         />
 
-                        <div style={{ fontSize: "16px" }}>
+                        <div
+                            style={{
+                                fontSize: "16px",
+                                fontFamily: "OldEnglish",
+                            }}
+                        >
                             Republic of the Philippines
                         </div>
-                        <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+
+                        <div
+                            style={{
+                                fontSize: "24px",
+                                fontWeight: "bold",
+                                fontFamily: "OldEnglish",
+                            }}
+                        >
                             Department of Education
                         </div>
                         <div style={{ fontSize: "13px", fontWeight: "bold" }}>

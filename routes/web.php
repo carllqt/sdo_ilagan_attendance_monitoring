@@ -102,7 +102,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/sickleaveupdate', [SickLeaveController::class, 'update'])->name('sick-leave.update');
 
     // Department Heads
-    Route::get('/departmentheads', [DepartmentHeadController::class, 'index'])->name('departmenthead.index');
+    Route::get('/departmentheads', [DepartmentHeadController::class, 'index'])->name('departmenthead');
     Route::post('/departmentheads/store', [DepartmentHeadController::class, 'store'])->name('departmenthead.store');
     Route::patch('/department-head/{departmentHead}/toggle-status', [DepartmentHeadController::class, 'toggleStatus'])
         ->name('departmenthead.toggle-status');
@@ -112,7 +112,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::prefix('employee')->group(function () {
         // Show locator slip page
         Route::get('/locator-slip', [LocatorSlipController::class, 'index'])
-            ->name('locator-slips.index');
+            ->name('locator-slips');
 
         // Store new locator slip
         Route::post('/locator-slip', [LocatorSlipController::class, 'store'])
@@ -139,21 +139,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/travel-order', function () {
         return Inertia::render('Employee/TravelOrder');
     })->name('travelorder');
-
-    Route::get('/locator-slip', function () {
-        return Inertia::render('Employee/LocatorSlip/LocatorSlip');
-    })->name('locatorslip');
-
-    // Show the locator slip page
-    Route::get('employee/locator-slip', [LocatorSlipController::class, 'index'])
-        ->name('locator-slips.index');
-
-    // Store a new locator slip
-    Route::post('employee/locator-slip', [LocatorSlipController::class, 'store'])
-        ->name('locator-slips.store');
-
-    // Generate PDF for a locator slip
-    Route::get('/employee/locator-slip/pdf/{id}', [LocatorSlipController::class, 'generatePDF']);
 });
 
 

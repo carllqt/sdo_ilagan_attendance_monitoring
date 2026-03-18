@@ -6,18 +6,18 @@ use App\Models\Administrator\Employee;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class School extends Model
+class Station extends Model
 {
-    /** @use HasFactory<\Database\Factories\SchoolFactory> */
     use HasFactory;
 
     protected $fillable = [
+        'code',
         'name',
-        'address',
-        'school_code'
     ];
 
-    public function employess(){
+    // relationship
+    public function employees()
+    {
         return $this->hasMany(Employee::class);
     }
 }

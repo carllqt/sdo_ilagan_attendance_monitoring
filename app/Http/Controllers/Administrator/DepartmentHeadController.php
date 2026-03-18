@@ -39,7 +39,7 @@ class DepartmentHeadController extends Controller
             ->orderBy('employees.last_name')
             ->get();
 
-        $employees = Employee::select('id', 'first_name','middle_name','last_name',  'work_type', 'position')->get();
+        $employees = Employee::select('id', 'first_name', 'middle_name', 'last_name',  'work_type', 'position')->get();
 
         return Inertia::render('Admin/DepartmentHead/DepartmentHead', [
             'dept_heads' => $dept_heads,
@@ -69,16 +69,15 @@ class DepartmentHeadController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('departmenthead.index')
+                ->route('departmenthead')
                 ->with('success', 'Department head created successfully.');
-
         } catch (Throwable $e) {
 
             DB::rollBack();
 
             return redirect()
                 ->back()
-                ->with('error', $e->getMessage()); // important for toast
+                ->with('error', $e->getMessage());
         }
     }
 

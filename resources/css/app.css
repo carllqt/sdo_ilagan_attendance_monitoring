@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "OldEnglish";
+    src: url("/fonts/oldenglishtextmt.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

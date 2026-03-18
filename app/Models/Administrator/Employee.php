@@ -3,13 +3,13 @@
 namespace App\Models\Administrator;
 
 use App\Models\DepartmentHead;
-use App\Models\School;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\HumanResource\TardyConvertion;
 use App\Models\Biometric;
 use App\Models\HumanResource\SickLeave;
 use App\Models\HumanResource\VacationLeave;
+use App\Models\Station;
 use Database\Factories\EmployeeFactory;
 
 class Employee extends Model
@@ -24,6 +24,7 @@ class Employee extends Model
         'department',
         'work_type',
         'active_status',
+        'station_id',
         'civil_status',
         'gsis_policy_no',
         'entrance_to_duty',
@@ -68,10 +69,12 @@ class Employee extends Model
     {
         return $this->hasMany(VacationLeave::class);
     }
-    public function school(){
-        return $this->belongsTo(School::class);
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
     }
-    public function head(){
+    public function head()
+    {
         return $this->belongsTo(DepartmentHead::class);
     }
 }

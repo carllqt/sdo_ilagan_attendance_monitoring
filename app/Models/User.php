@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'employee_id',
         'email',
         'password',
     ];
@@ -47,7 +47,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-   public function employee()
+    public function employee()
     {
         return $this->hasOne(Employee::class);
     }
