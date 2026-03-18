@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\LocatorSlipController;
+use App\Http\Controllers\TravelOrderController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -137,8 +138,29 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     })->name('printdtr');
 
     Route::get('/travel-order', function () {
-        return Inertia::render('Employee/TravelOrder');
+        return Inertia::render('Employee/TravelOrder/TravelOrderPage');
     })->name('travelorder');
+<<<<<<< HEAD
+=======
+    Route::post('/employee/travel-order', [TravelOrderController::class, 'store']);
+    Route::get('/travel-order', [TravelOrderController::class, 'index'])
+    ->name('travelorder');
+
+    Route::get('/locator-slip', function () {
+        return Inertia::render('Employee/LocatorSlip/LocatorSlip');
+    })->name('locatorslip');
+
+    // Show the locator slip page
+    Route::get('employee/locator-slip', [LocatorSlipController::class, 'index'])
+        ->name('locator-slips.index');
+
+    // Store a new locator slip
+    Route::post('employee/locator-slip', [LocatorSlipController::class, 'store'])
+        ->name('locator-slips.store');
+
+    // Generate PDF for a locator slip
+    Route::get('/employee/locator-slip/pdf/{id}', [LocatorSlipController::class, 'generatePDF']);
+>>>>>>> 4a05793315799ed5f7cd47b7f9afdb495d5efcc4
 });
 
 

@@ -486,6 +486,7 @@ const LocatorSlipReport = React.forwardRef(
                             style={{
                                 display: "inline-block",
                                 verticalAlign: "middle",
+                                fontWeight: "bold",
                             }}
                         >
                             <img
@@ -505,6 +506,7 @@ const LocatorSlipReport = React.forwardRef(
                                 style={{
                                     verticalAlign: "middle",
                                     display: "inline-block",
+                                    fontWeight: "bold",
                                 }}
                             >
                                 www.facebook.com/sdoilagan
@@ -519,6 +521,7 @@ const LocatorSlipReport = React.forwardRef(
                             style={{
                                 display: "inline-block",
                                 verticalAlign: "middle",
+                                fontWeight: "bold",
                             }}
                         >
                             <img
@@ -538,6 +541,7 @@ const LocatorSlipReport = React.forwardRef(
                                 style={{
                                     verticalAlign: "middle",
                                     display: "inline-block",
+                                    fontWeight: "bold",
                                 }}
                             >
                                 ilagan@deped.gov.ph
@@ -550,6 +554,7 @@ const LocatorSlipReport = React.forwardRef(
 
                         <span
                             style={{
+                                fontWeight: "bold",
                                 display: "inline-block",
                                 verticalAlign: "middle",
                             }}
