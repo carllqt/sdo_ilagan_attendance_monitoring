@@ -68,11 +68,7 @@ export default function LocatorSlipForm({ onClose, employee }) {
                             </label>
                             <input
                                 className="mt-1 w-full rounded-lg border bg-gray-100 p-2"
-                                value={
-                                    employee?.station ||
-                                    employee?.permanent_station ||
-                                    ""
-                                }
+                                value={employee?.station?.name || ""}
                                 readOnly
                             />
                         </div>

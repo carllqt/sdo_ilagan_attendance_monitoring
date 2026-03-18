@@ -12,7 +12,7 @@ class LocatorSlipController extends Controller
 {
     public function index()
     {
-        $employee = Employee::first(); // ✅ ADD THIS BACK
+        $employee = Employee::with('station')->first();
 
         $locator_slips = LocatorSlip::with('employee')
             ->latest()
