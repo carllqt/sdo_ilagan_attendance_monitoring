@@ -49,10 +49,21 @@ const LocatorSlipReport = React.forwardRef(
                             }}
                         />
 
-                        <div style={{ fontSize: "16px" }}>
+                        <div
+                            style={{
+                                fontSize: "16px",
+                                fontFamily: "OldEnglish",
+                            }}
+                        >
                             Republic of the Philippines
                         </div>
-                        <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                        <div
+                            style={{
+                                fontSize: "24px",
+                                fontWeight: "bold",
+                                fontFamily: "OldEnglish",
+                            }}
+                        >
                             Department of Education
                         </div>
                         <div style={{ fontSize: "13px", fontWeight: "bold" }}>
@@ -474,6 +485,7 @@ const LocatorSlipReport = React.forwardRef(
                             style={{
                                 display: "inline-block",
                                 verticalAlign: "middle",
+                                fontWeight: "bold",
                             }}
                         >
                             <img
@@ -493,6 +505,7 @@ const LocatorSlipReport = React.forwardRef(
                                 style={{
                                     verticalAlign: "middle",
                                     display: "inline-block",
+                                    fontWeight: "bold",
                                 }}
                             >
                                 www.facebook.com/sdoilagan
@@ -507,6 +520,7 @@ const LocatorSlipReport = React.forwardRef(
                             style={{
                                 display: "inline-block",
                                 verticalAlign: "middle",
+                                fontWeight: "bold",
                             }}
                         >
                             <img
@@ -526,6 +540,7 @@ const LocatorSlipReport = React.forwardRef(
                                 style={{
                                     verticalAlign: "middle",
                                     display: "inline-block",
+                                    fontWeight: "bold",
                                 }}
                             >
                                 ilagan@deped.gov.ph
@@ -538,6 +553,7 @@ const LocatorSlipReport = React.forwardRef(
 
                         <span
                             style={{
+                                fontWeight: "bold",
                                 display: "inline-block",
                                 verticalAlign: "middle",
                             }}
