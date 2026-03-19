@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\HumanResource\TardyConvertion;
 use App\Models\Biometric;
+use App\Models\User;
 use App\Models\HumanResource\SickLeave;
 use App\Models\HumanResource\VacationLeave;
 use App\Models\Station;
@@ -76,5 +77,9 @@ class Employee extends Model
     public function head()
     {
         return $this->belongsTo(DepartmentHead::class);
+    }
+    public function user()
+    {
+        return $this->hasOne(User::class);
     }
 }

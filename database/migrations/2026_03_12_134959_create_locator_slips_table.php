@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
             $table->string('purpose_of_travel');
-            $table->boolean('official_business')->default(false);
-            $table->boolean('official_time')->default(false);
+            $table->enum('travel_type', ['official_business', 'official_time']);
+            $table->dateTime('travel_datetime');
             $table->string('destination');
             $table->timestamps();
         });

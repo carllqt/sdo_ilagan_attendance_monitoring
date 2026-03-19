@@ -7,8 +7,8 @@ export default function LocatorSlipForm({ onClose, employee }) {
     const { data, setData, post, processing, reset, errors } = useForm({
         purpose_of_travel: "",
         destination: "",
-        date_time: "",
-        check_type: "",
+        travel_datetime: "",
+        travel_type: "",
     });
 
     const submit = (e) => {
@@ -36,7 +36,6 @@ export default function LocatorSlipForm({ onClose, employee }) {
                 </div>
 
                 <form onSubmit={submit} className="space-y-5">
-                    {/* Employee Info */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="text-sm font-medium text-gray-600">
@@ -74,7 +73,6 @@ export default function LocatorSlipForm({ onClose, employee }) {
                         </div>
                     </div>
 
-                    {/* Purpose */}
                     <div>
                         <label className="text-sm font-medium text-gray-700">
                             Purpose of Travel
@@ -94,7 +92,6 @@ export default function LocatorSlipForm({ onClose, employee }) {
                         )}
                     </div>
 
-                    {/* Travel Type */}
                     <div>
                         <label className="text-sm font-medium text-gray-700">
                             Travel Type
@@ -103,13 +100,13 @@ export default function LocatorSlipForm({ onClose, employee }) {
                             <label className="flex cursor-pointer items-center gap-2">
                                 <input
                                     type="radio"
-                                    name="check_type"
-                                    value="Official Business"
+                                    name="travel_type"
+                                    value="official_business"
                                     checked={
-                                        data.check_type === "Official Business"
+                                        data.travel_type === "official_business"
                                     }
                                     onChange={(e) =>
-                                        setData("check_type", e.target.value)
+                                        setData("travel_type", e.target.value)
                                     }
                                 />
                                 Official Business
@@ -118,27 +115,26 @@ export default function LocatorSlipForm({ onClose, employee }) {
                             <label className="flex cursor-pointer items-center gap-2">
                                 <input
                                     type="radio"
-                                    name="check_type"
-                                    value="Official Time"
+                                    name="travel_type"
+                                    value="official_time"
                                     checked={
-                                        data.check_type === "Official Time"
+                                        data.travel_type === "official_time"
                                     }
                                     onChange={(e) =>
-                                        setData("check_type", e.target.value)
+                                        setData("travel_type", e.target.value)
                                     }
                                 />
                                 Official Time
                             </label>
                         </div>
 
-                        {errors.check_type && (
+                        {errors.travel_type && (
                             <p className="mt-1 text-sm text-red-500">
-                                {errors.check_type}
+                                {errors.travel_type}
                             </p>
                         )}
                     </div>
 
-                    {/* Date + Destination */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="text-sm font-medium text-gray-700">
@@ -147,14 +143,14 @@ export default function LocatorSlipForm({ onClose, employee }) {
                             <input
                                 type="datetime-local"
                                 className="mt-1 w-full rounded-lg border p-2"
-                                value={data.date_time}
+                                value={data.travel_datetime}
                                 onChange={(e) =>
-                                    setData("date_time", e.target.value)
+                                    setData("travel_datetime", e.target.value)
                                 }
                             />
-                            {errors.date_time && (
+                            {errors.travel_datetime && (
                                 <p className="mt-1 text-sm text-red-500">
-                                    {errors.date_time}
+                                    {errors.travel_datetime}
                                 </p>
                             )}
                         </div>
@@ -179,7 +175,6 @@ export default function LocatorSlipForm({ onClose, employee }) {
                         </div>
                     </div>
 
-                    {/* Buttons */}
                     <div className="flex justify-between gap-3 border-t pt-4">
                         <div className="flex gap-2">
                             <button

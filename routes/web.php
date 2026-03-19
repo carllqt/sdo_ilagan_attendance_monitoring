@@ -109,7 +109,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('departmenthead.toggle-status');
     Route::delete('/departmentheads/delete/{id}', [DepartmentHeadController::class, 'destroy'])->name('departmenthead.destroy');
 
-    //Locator SLips
     Route::prefix('employee')->group(function () {
         // Show locator slip page
         Route::get('/locator-slip', [LocatorSlipController::class, 'index'])

@@ -14,13 +14,14 @@ class LocatorSlipController extends Controller
     {
         $employee = Employee::with('station')->first();
 
-        $locator_slips = LocatorSlip::with('employee')
+        $locator_slips = LocatorSlip::with('employee.station')
+            ->where('employee_id', $employee->id)
             ->latest()
             ->get();
 
         return Inertia::render('Employee/LocatorSlip/LocatorSlipPage', [
             'locator_slips' => $locator_slips,
-            'employee' => $employee, // ✅ now defined again
+            'employee' => $employee,
             'success_message' => session('success_message'),
             'error_message' => session('error_message'),
         ]);
@@ -29,35 +30,23 @@ class LocatorSlipController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'employee_id' => 'required|exists:employees,id',
             'purpose_of_travel' => 'required|string|max:255',
             'destination' => 'required|string|max:255',
-            'check_type' => 'required|string|in:Official Business,Official Time',
-            'date_time' => 'required|date',
+            'travel_type' => 'required|in:official_business,official_time',
+            'travel_datetime' => 'required|date',
         ]);
 
-        $employee = Employee::first(); // replace with logged-in employee later
-
-        if (!$employee) {
-            return redirect()
-                ->route('locator-slips.index')
-                ->with('error_message', 'No employee found in the system.');
-        }
-
         LocatorSlip::create([
-            'employee_id' => $employee->id,
+            'employee_id' => $validated['employee_id'],
             'purpose_of_travel' => $validated['purpose_of_travel'],
             'destination' => $validated['destination'],
-
-            // ✅ BOOLEAN ONLY
-            'official_business' => $validated['check_type'] === 'Official Business',
-            'official_time' => $validated['check_type'] === 'Official Time',
-
-            // ✅ DATETIME ONLY
-            'date_time' => Carbon::parse($validated['date_time']),
+            'travel_type' => $validated['travel_type'],
+            'travel_datetime' => Carbon::parse($validated['travel_datetime']),
         ]);
 
         return redirect()
-            ->route('locator-slips.index')
+            ->route('locator-slips')
             ->with('success_message', 'Locator Slip created successfully.');
     }
 }

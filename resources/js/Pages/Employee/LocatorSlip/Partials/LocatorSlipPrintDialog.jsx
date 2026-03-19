@@ -8,6 +8,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogDescription,
     DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/Components/ui/button";
@@ -29,10 +30,9 @@ const LocatorSlipPrintDialog = ({ open, onClose, slip }) => {
         await html2pdf()
             .set({
                 margin: 0,
-                filename: `Locator_Slip_${(
-                    slip.employee?.full_name ||
-                    slip.employee?.name ||
-                    "Employee"
+                filename: `Locator_Slip_${(slip.employee
+                    ? `${slip.employee.first_name ?? ""} ${slip.employee.last_name ?? ""}`.trim()
+                    : "Employee"
                 ).replace(/\s+/g, "_")}.pdf`,
                 image: { type: "jpeg", quality: 1 },
                 html2canvas: {
@@ -57,14 +57,22 @@ const LocatorSlipPrintDialog = ({ open, onClose, slip }) => {
     if (!open || !slip) return null;
 
     const reportProps = {
-        name: slip.employee?.full_name || slip.employee?.name || "",
+        name: slip.employee
+            ? `${slip.employee.first_name ?? ""} ${slip.employee.middle_name ?? ""} ${slip.employee.last_name ?? ""}`
+                  .replace(/\s+/g, " ")
+                  .trim()
+            : "",
         position: slip.employee?.position || "",
-        station:
-            slip.employee?.station || slip.employee?.permanent_station || "",
+        station: slip.employee?.station?.name || "",
         purpose: slip.purpose_of_travel || "",
-        check_type: slip.check_type || "",
-        date_time: slip.date_time
-            ? dayjs(slip.date_time).format("MMMM D, YYYY hh:mm A")
+        check_type:
+            slip.travel_type === "official_business"
+                ? "Official Business"
+                : slip.travel_type === "official_time"
+                  ? "Official Time"
+                  : "",
+        date_time: slip.travel_datetime
+            ? dayjs(slip.travel_datetime).format("MMMM D, YYYY hh:mm A")
             : "",
         destination: slip.destination || "",
     };
@@ -74,9 +82,11 @@ const LocatorSlipPrintDialog = ({ open, onClose, slip }) => {
             <DialogContent className="w-[95vw] max-w-4xl max-h-[90vh] overflow-hidden p-4">
                 <DialogHeader className="pb-2">
                     <DialogTitle>Locator Slip Preview</DialogTitle>
+                    <DialogDescription>
+                        Preview and download the locator slip before printing.
+                    </DialogDescription>
                 </DialogHeader>
 
-                {/* Visible Preview */}
                 <div className="max-h-[65vh] overflow-auto rounded-md border bg-gray-100 p-3">
                     <div className="flex justify-center">
                         <div className="origin-top scale-[0.72] sm:scale-[0.82]">
@@ -109,7 +119,6 @@ const LocatorSlipPrintDialog = ({ open, onClose, slip }) => {
                     </Button>
                 </DialogFooter>
 
-                {/* Hidden Full-Size PDF Copy */}
                 <div className="fixed -left-[10000px] top-0 z-[-1]">
                     <div className="w-[794px] bg-white">
                         <LocatorSlipReport ref={pdfRef} {...reportProps} />
