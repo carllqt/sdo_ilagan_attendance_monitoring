@@ -1,15 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "@inertiajs/react";
 
 export default function LocatorSlipForm({ onClose, employee }) {
     const { data, setData, post, processing, reset, errors } = useForm({
+        employee_id: "",
         purpose_of_travel: "",
         destination: "",
         travel_datetime: "",
         travel_type: "",
     });
+
+    useEffect(() => {
+        if (employee?.id) {
+            setData("employee_id", employee.id);
+        }
+    }, [employee]);
 
     const submit = (e) => {
         e.preventDefault();

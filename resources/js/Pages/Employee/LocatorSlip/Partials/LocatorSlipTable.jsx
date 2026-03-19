@@ -43,20 +43,25 @@ const LocatorSlipTable = ({ slips = [] }) => {
                                 className="transition hover:bg-gray-50"
                             >
                                 <td className="px-6 py-3">
-                                    {slip.employee?.full_name ||
-                                        slip.employee?.name ||
-                                        "—"}
+                                    {slip.employee
+                                        ? `${slip.employee.first_name ?? ""} ${slip.employee.middle_name ?? ""} ${slip.employee.last_name ?? ""}`
+                                              .replace(/\s+/g, " ")
+                                              .trim()
+                                        : "—"}
                                 </td>
+
                                 <td className="px-6 py-3">
                                     {slip.purpose_of_travel || "—"}
                                 </td>
+
                                 <td className="px-6 py-3">
                                     {slip.destination || "—"}
                                 </td>
+
                                 <td className="px-6 py-3">
-                                    {slip.date_time
+                                    {slip.travel_datetime
                                         ? new Date(
-                                              slip.date_time,
+                                              slip.travel_datetime,
                                           ).toLocaleString("en-PH", {
                                               year: "numeric",
                                               month: "long",
@@ -68,6 +73,7 @@ const LocatorSlipTable = ({ slips = [] }) => {
                                           })
                                         : "—"}
                                 </td>
+
                                 <td className="px-6 py-3 text-center">
                                     <button
                                         onClick={() => handlePreview(slip)}

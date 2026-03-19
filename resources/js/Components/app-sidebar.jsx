@@ -52,6 +52,12 @@ export function AppSidebar({ active, user, ...props }) {
 
     const { url } = usePage();
 
+    const { auth } = usePage().props;
+
+    console.log("Auth object:", auth);
+    console.log("Logged in user:", auth?.user);
+    console.log("Employee:", auth?.user?.employee);
+
     return (
         <Sidebar {...props}>
             <SidebarHeader>
