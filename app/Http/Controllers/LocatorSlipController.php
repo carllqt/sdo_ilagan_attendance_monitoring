@@ -70,7 +70,8 @@ class LocatorSlipController extends Controller
         ]);
 
         return redirect()
-            ->route('locator-slips')
+            ->route('locator-slips
+            ')
             ->with('success_message', 'Locator Slip created successfully.');
     }
 }
