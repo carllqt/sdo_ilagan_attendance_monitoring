@@ -1,1 +1,0 @@
-This folder was primarily created for IDEs to comprehend the foreign code of the original SDK (C#) and generate snippet hints. Totally uselesss, you can skip.

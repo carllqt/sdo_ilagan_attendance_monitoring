@@ -23,7 +23,7 @@ const LocatorSlipReport = React.forwardRef(
                     color: "#000",
                     fontFamily: '"Times New Roman", serif',
                     fontSize: "12px",
-                    padding: "20px 24px",
+                    padding: "20px 50px",
                     boxSizing: "border-box",
                     margin: "0 auto",
                     display: "flex",
@@ -410,177 +410,145 @@ const LocatorSlipReport = React.forwardRef(
                     </table>
                 </div>
 
-                {/* FOOTER */}
                 <div
                     style={{
-                        marginTop: "14px",
+                        marginTop: "10px",
                         borderTop: "1px solid black",
-                        paddingTop: "8px",
                         fontSize: "11px",
-                        fontWeight: "bold",
+                        width: "100%",
                     }}
                 >
-                    {/* TOP ROW */}
-                    <table
-                        style={{
-                            width: "100%",
-                            borderCollapse: "collapse",
-                        }}
-                    >
-                        <tbody>
-                            <tr>
-                                {/* LEFT: LOGOS */}
-                                <td
-                                    style={{
-                                        width: "200px",
-                                        verticalAlign: "middle",
-                                    }}
-                                >
-                                    <div
-                                        style={{ display: "flex", gap: "6px" }}
-                                    >
-                                        <img
-                                            src="/img/deped_matatag.jpg"
-                                            style={{
-                                                height: "46px",
-                                                position: "relative",
-                                            }}
-                                        />
-                                        <img
-                                            src="/sdo-pic.jpg"
-                                            style={{
-                                                height: "46px",
-                                                position: "relative",
-                                            }}
-                                        />
-                                    </div>
-                                </td>
-
-                                {/* RIGHT: ADDRESS + TELEPHONE */}
-                                <td
-                                    style={{
-                                        textAlign: "right",
-                                        verticalAlign: "middle",
-                                        lineHeight: "1.2",
-                                    }}
-                                >
-                                    Civic Center, Alibagu, City of Ilagan,
-                                    Isabela
-                                    <br />
-                                    Telephone Nos. (078) 624-0077
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
                     <div
                         style={{
-                            marginTop: "1px",
-                            textAlign: "right",
-                            whiteSpace: "nowrap",
-                            fontWeight: "normal",
-                            lineHeight: "12px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            width: "100%",
                         }}
                     >
-                        <span
+                        {/* LEFT SIDE */}
+                        <div
                             style={{
-                                display: "inline-block",
-                                verticalAlign: "middle",
-                                fontWeight: "bold",
+                                width: "360px",
+                                display: "flex",
+                                alignItems: "center",
                             }}
                         >
                             <img
-                                src="/img/fb_logo.png"
+                                src="/img/footer_logos.png"
                                 style={{
-                                    height: "12px",
-                                    width: "12px",
-                                    verticalAlign: "middle",
-                                    marginRight: "4px",
-                                    display: "inline-block",
-                                    position: "relative",
-                                    top: "8px",
+                                    height: "54px",
+                                    display: "block",
                                 }}
-                                alt=""
+                                alt="Footer Logos"
                             />
-                            <span
+                        </div>
+
+                        {/* RIGHT SIDE */}
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "flex-end", // 👈 keeps everything right
+                                textAlign: "right",
+                                width: "100%", // 👈 ADD THIS
+                            }}
+                        >
+                            {/* ADDRESS */}
+                            <div
                                 style={{
-                                    verticalAlign: "middle",
-                                    display: "inline-block",
                                     fontWeight: "bold",
+                                    fontSize: "12px",
+                                    lineHeight: "1.2",
+                                    marginBottom: "6px",
                                 }}
                             >
-                                www.facebook.com/sdoilagan
-                            </span>
-                        </span>
+                                City Civic Center, Alibagu, City of Ilagan,
+                                Isabela
+                            </div>
 
-                        <span
-                            style={{ display: "inline-block", width: "8px" }}
-                        />
-
-                        <span
-                            style={{
-                                display: "inline-block",
-                                verticalAlign: "middle",
-                                fontWeight: "bold",
-                            }}
-                        >
-                            <img
-                                src="/img/gmail.png"
+                            {/* CONTACTS */}
+                            <div
                                 style={{
-                                    height: "12px",
-                                    width: "12px",
-                                    verticalAlign: "middle",
-                                    marginRight: "4px",
-                                    display: "inline-block",
-                                    position: "relative",
-                                    top: "8px",
-                                }}
-                                alt=""
-                            />
-                            <span
-                                style={{
-                                    verticalAlign: "middle",
-                                    display: "inline-block",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "flex-end",
+                                    gap: "14px",
+                                    fontSize: "9px",
                                     fontWeight: "bold",
+                                    lineHeight: "1",
+                                    whiteSpace: "nowrap",
+                                    flexWrap: "nowrap",
+                                    width: "100%", // 👈 important
                                 }}
                             >
-                                ilagan@deped.gov.ph
-                            </span>
-                        </span>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "3px",
+                                    }}
+                                >
+                                    <img
+                                        src="/img/fb_logo.png"
+                                        style={{
+                                            height: "12px",
+                                            width: "12px",
+                                            verticalAlign: "middle",
+                                            display: "inline-block",
+                                            position: "relative",
+                                            top: "7px",
+                                        }}
+                                        alt="Facebook"
+                                    />
+                                    <span>www.facebook.com/sdoilagan</span>
+                                </div>
 
-                        <span
-                            style={{ display: "inline-block", width: "8px" }}
-                        />
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "3px",
+                                    }}
+                                >
+                                    <img
+                                        src="/img/gmail.png"
+                                        style={{
+                                            height: "12px",
+                                            width: "12px",
+                                            verticalAlign: "middle",
+                                            display: "inline-block",
+                                            position: "relative",
+                                            top: "7px",
+                                        }}
+                                        alt="Email"
+                                    />
+                                    <span>ilagan@deped.gov.ph</span>
+                                </div>
 
-                        <span
-                            style={{
-                                fontWeight: "bold",
-                                display: "inline-block",
-                                verticalAlign: "middle",
-                            }}
-                        >
-                            <img
-                                src="/img/internet.png"
-                                style={{
-                                    height: "12px",
-                                    width: "12px",
-                                    verticalAlign: "middle",
-                                    marginRight: "4px",
-                                    display: "inline-block",
-                                    position: "relative",
-                                    top: "8px",
-                                }}
-                                alt=""
-                            />
-                            <span
-                                style={{
-                                    verticalAlign: "middle",
-                                    display: "inline-block",
-                                }}
-                            >
-                                www.sdocityofilagan.gov.ph
-                            </span>
-                        </span>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "3px",
+                                    }}
+                                >
+                                    <img
+                                        src="/img/internet.png"
+                                        style={{
+                                            height: "12px",
+                                            width: "12px",
+                                            verticalAlign: "middle",
+                                            display: "inline-block",
+                                            position: "relative",
+                                            top: "7px",
+                                        }}
+                                        alt="Website"
+                                    />
+                                    <span>www.sdocityofilagan.gov.ph</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

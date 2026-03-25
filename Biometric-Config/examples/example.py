@@ -7,10 +7,10 @@ import mysql.connector
 import logging
 import sys
 
-from register import register_fingerprint
-from login import login_with_fingerprint
-from test import test_fingerprint
-from fingerprint_choice import fingerprint_choice
+from .register import register_fingerprint
+from .login import login_with_fingerprint
+from .test import test_fingerprint
+from .fingerprint_choice import fingerprint_choice
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("FingerprintService")
